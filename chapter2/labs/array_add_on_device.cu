@@ -17,6 +17,7 @@
 // In this case i is the fastest changing thread dimension
 __global__ void add_v1(int *a, int *b, int *c, int N, int M)
 {
+    
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     int j = blockIdx.y * blockDim.y + threadIdx.y;
     if (i < N && j < M)
