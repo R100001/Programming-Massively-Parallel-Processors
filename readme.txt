@@ -1,5 +1,5 @@
 Compile:
-    nvcc simple_kernel_launch.cu
+    nvcc <source_file>.cu
     
 Memory debugging:
     cuda-memcheck ./a.out
