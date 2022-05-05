@@ -1,15 +1,24 @@
-#include <cstdio>
-#include <cstdlib>
+/*/
+ *
+ *  This is a program to test the performance
+ *  of two different kernels, add_v1 and add_v2.
+ *  
+ *  The difference between the two kernels is that
+ *  in add_v1, i is the fastest changing thread dimension,
+ *  while in add_v2, j is the fastest changing thread dimension.
+ * 
+ *  Compile with:
+ *      nvcc array_add_on_device.cu
+ * 
+ *  Run with:
+ *     ./a.out
+ * 
+ *  Check the performance of the two kernels with:
+ *      nvprof ./a.out  
+ * 
+/*/
 
-#define cudaCheckError()                                                                     \
-    {                                                                                        \
-        cudaError_t e = cudaGetLastError();                                                  \
-        if (e != cudaSuccess)                                                                \
-        {                                                                                    \
-            printf("Cuda failure %s:%d: '%s'\n", __FILE__, __LINE__, cudaGetErrorString(e)); \
-            exit(EXIT_FAILURE);                                                              \
-        }                                                                                    \
-    }
+#include <cstdio>
 
 #define IDX(row, col, LDA) ((row) * (LDA) + (col))
 
@@ -60,6 +69,5 @@ int main()
     cudaFree(c);
 
     cudaDeviceSynchronize();
-    cudaCheckError();
     return 0;
 }

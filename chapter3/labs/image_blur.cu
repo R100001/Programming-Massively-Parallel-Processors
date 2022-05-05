@@ -1,15 +1,18 @@
+/*/
+ * 
+ *  A program that blurs an image using the mean of the surrounding pixels
+ * 
+ *  Compile with:
+ *      nvcc image_blur.cu
+ * 
+ *  Run with:
+ *     ./a.out <block_size>
+ * 
+/*/
+
+
 #include <cstdio>
 #include <cstdlib>
-
-#define cudaCheckError()                                                                     \
-    {                                                                                        \
-        cudaError_t e = cudaGetLastError();                                                  \
-        if (e != cudaSuccess)                                                                \
-        {                                                                                    \
-            printf("Cuda failure %s:%d: '%s'\n", __FILE__, __LINE__, cudaGetErrorString(e)); \
-            exit(EXIT_FAILURE);                                                              \
-        }                                                                                    \
-    }
 
 #define BLUR_SIZE 1
 
@@ -18,9 +21,6 @@ void blur_kernel(unsigned char* in, unsigned char* out, int width, int height){
 
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
-
-    //if(col >= width || row >= height)
-    //    printf("%d %d\n %d %d\n %d %d\n %d %d\n\n", col, row, blockIdx.x, blockIdx.y, blockDim.x, blockDim.y, threadIdx.x, threadIdx.y);
 
     if(col >= width || row >= height) return;
 
@@ -37,7 +37,7 @@ void blur_kernel(unsigned char* in, unsigned char* out, int width, int height){
             if(curcol < 0 || curcol >= width || currow < 0 || currow >= height) continue;
 
             pixVal += in[currow * width + curcol];
-            ++pixels;// Count the number of pixel values that have been added
+            ++pixels; // Count the number of pixel values that have been added
         }
     }
     // printf("%d %d\n", pixVal, pixels);
@@ -62,20 +62,21 @@ int main(int argc, char* argv[]){
     block_size = strtol(argv[1], NULL, 10);
 
     // Set the width and height of the image
-    image_width = 50;
-    image_height = 20;
+    image_width = 20;
+    image_height = 10;
     size = image_width * image_height;
 
     // Allocate memory for the input and output images and initialize the input image
     h_input_image = (unsigned char*) malloc(size * sizeof(unsigned char));
     h_output_image = (unsigned char*) malloc(size * sizeof(unsigned char));
+    srand(time(NULL));
     for(int i = 0; i < size; ++i)
         h_input_image[i] = rand() % 256;
 
     // Show the input image
     for(int i = 0; i < image_height; ++i){
         for(int j = 0; j < image_width; ++j)
-            printf("%d ", h_input_image[i * image_width + j]);
+            printf("%3d ", h_input_image[i * image_width + j]);
         printf("\n");
     }
     printf("\n");
@@ -88,9 +89,6 @@ int main(int argc, char* argv[]){
     // Blur the image
     dim3 dimGrid(ceil((float)image_width/block_size), ceil((float)image_height/block_size), 1);
     dim3 dimBlock(block_size, block_size, 1);
-    //printf("%d %d\n", dimGrid.x, dimGrid.y);
-    //printf("%d %d\n", dimBlock.x, dimBlock.y);
-    //printf("\n");
     blur_kernel<<<dimGrid, dimBlock>>>(d_input_image, d_output_image, image_width, image_height);
 
     // Copy the output back to the host
@@ -99,7 +97,7 @@ int main(int argc, char* argv[]){
     // Show the output image
     for(int i = 0; i < image_height; ++i){
         for(int j = 0; j < image_width; ++j)
-            printf("%d ", h_output_image[i * image_width + j]);
+            printf("%3d ", h_output_image[i * image_width + j]);
         printf("\n");
     }
 

@@ -1,3 +1,15 @@
+/*/
+ * 
+ *  A program that implements vector addition
+ * 
+ *  Compile with:
+ *      nvcc vector_add.cu
+ * 
+ *  Run with:
+ *     ./a.out <block_size> <input_len>
+ * 
+/*/
+
 #include <stdio.h>
 
 __global__
@@ -30,12 +42,6 @@ int main(int argc, char* argv[])
     }
 
     blockSize = strtol(argv[1], NULL, 10);
-    if(blockSize > 1024)
-    {
-        printf("Block size must be less or equal than 1024\n");
-        return 1;
-    }
-
     inputLength = strtol(argv[2], NULL, 10);
 
     // Allocate host memory for the input and output data
@@ -44,6 +50,7 @@ int main(int argc, char* argv[])
     hostOutput = (int*)malloc(inputLength * sizeof(int));
 
     // Initialize the host vectors
+    srand(time(NULL));
     for (int i = 0; i < inputLength; i++)
     {
         hostInput1[i] = rand() % 100;

@@ -1,3 +1,15 @@
+/*/
+ * 
+ *  A program that showcases the use of thrust library for a simple vector addition example.
+ * 
+ *  Compile with:
+ *      nvcc thrust_vector_add.cu
+ * 
+ *  Run with:
+ *     ./a.out <input_len>
+ * 
+/*/
+
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
 
@@ -22,16 +34,11 @@ int main(int argc, char* argv[])
     hostOutput = (int*)malloc(inputLength * sizeof(int));
 
     // Initialize host memory
+    srand(time(NULL));
     for(int i = 0; i < inputLength; i++){
         hostInput1[i] = rand() % 100;
         hostInput2[i] = rand() % 100;
     }
-    
-    // Print inputs
-    for(int i = 0; i < inputLength; i++) printf("%d ", hostInput1[i]);
-    printf("\n");
-    for(int i = 0; i < inputLength; i++) printf("%d ", hostInput2[i]);
-    printf("\n");
 
     // Allocate device memory
     thrust::device_vector<int> deviceInput1(inputLength);
@@ -50,10 +57,9 @@ int main(int argc, char* argv[])
     // Copy device data to host
     thrust::copy(deviceOutput.begin(), deviceOutput.end(), hostOutput);
 
-    for(int i = 0; i < inputLength; i++){
-        printf("%d ", hostOutput[i]);
-    }
-    printf("\n");
+    // Print the results
+    for (int i = 0; i < inputLength; i++)
+        printf("%d + %d = %d\n", hostInput1[i], hostInput2[i], hostOutput[i]);
 
     free(hostInput1);
     free(hostInput2);
