@@ -29,7 +29,7 @@ Code debugging:
     - cuda thread            // print current thread
     - cuda thread 1          // switch to thread 1
     - cuda block             // print current block
-    - cuda block 1           // switch to block 1
+    - cuda block 1           // switch to block 1v
     - set cuda memcheck on   // turn on cuda memcheck
     
     NSIGHT Visual Studio Edition (for all platforms)
