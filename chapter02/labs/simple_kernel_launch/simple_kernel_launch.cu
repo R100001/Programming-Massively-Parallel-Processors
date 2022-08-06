@@ -10,7 +10,7 @@
  * 
 /*/
 
-#include <cstdio>
+#include <stdio.h>
 
 __global__ void mykernel(void) {}
 
