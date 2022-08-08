@@ -1,10 +1,10 @@
-# Introduction
+# 1. Introduction
 
-CPUs drove rapid performance increases and cost reductions for many years in the past. These performance increases allowed users to have better experiences and more functionalities.
+*CPUs drove rapid performance increases and cost reductions for many years in the past. These performance increases allowed users to have better experiences and more functionalities.*
 
-However this drive slowed down due to energy consumption and heat dissipation which led vendors to switch to models where multiple processor units are used instead of increasing performance in a single processing unit.
+*However this drive slowed down due to energy consumption and heat dissipation which led vendors to switch to models where multiple processor units are used instead of increasing performance in a single processing unit.*
 
-Now all the new processors are parallel computers with 2 or more processing units, thus the number of applications that need to be developed as parallel programs has increased dramatically.
+*Now all the new processors are parallel computers with 2 or more processing units, thus the number of applications that need to be developed as parallel programs has increased dramatically.*
 
 ## 1.1 Heterogeneous Parallel Computing
 
@@ -39,7 +39,7 @@ A CUDA-cabable GPU is organized as an array of highly threaded streaming mulipro
 
 SMs form a building block. The number of SMs per building block can be different from one generation to another. Each SM has streaming processors (SPs) that share control logic and instruction cache.
 
-<img src="../md_images/Architecture_cuda_GPU.png" width=640 height=360>
+<img src="../md_images/ch01/architecture_cuda_GPU.png" width=640 height=360>
 
 Each GPU currently comes with gigabytes of Graphics Double Data Rate (GDDR), Synchronous DRAM (SDRAM), referred to as Global Memory.
 
