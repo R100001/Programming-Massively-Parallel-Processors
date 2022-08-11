@@ -218,4 +218,38 @@ This allows us to run the same code on different hardware. The ability to execut
 
 <img src="../md_images/ch03/transparent_scalability.png" width=640 height=320>
 
+<br>
+
 ## 3.5 Resource Assignment
+
+Once a kernel is launched, the CUDA runtime system generates the corresponding grid of threads. As discussed in the previous section, these threads are assigned to execution resources on a block-by-block basis. In the current generation of hardware, the execution resources are organized into Streaming Multiprocessors (SMs).
+
+Each device sets a limit on the number of blocks that can be assigned to each SM. In situations where there is shortage of one or more types of resourcesmneeded for the simultaneous execution of blocks, the CUDA runtime automaticallymreduces the number of blocks assigned to each SM until their combined resourcemusage falls below the limit.
+
+One of the SM resource limitations is the number of threads that can be simultaneously tracked and scheduled. It takes hardware resources (built-in registers) for SMs to maintain the thread and block indexes and track their execution status. Therefore, each generation of hardware sets a limit on the number of blocks and number of threads that can be assigned to an SM.
+
+## 3.6 Querying Device Properties
+
+Our discussions on assigning execution resources to blocks raise an important question. How do we find out the amount of resources available?
+
+A system may or may not contain one or more CUDA capable devices. To get the number of devices, we can use the following code:
+
+```C
+int dev_count;
+cudaGetDeviceCount(&dev_count);
+```
+
+The CUDA runtime numbers all available devices in the system from 0 to *dev_count*-1. It provides an API function *cudaGetDeviceProperties* that returns the properties of the device whose number is given as an argument. We can use the following statements in the host code to iterate through the available devices and query their properties:
+
+```C
+cudaDeviceProp dev_prop;
+for (int i = 0; i < dev_count; i++) {
+    cudaGetDeviceProperties(&dev_prop, i);
+    //decide if device has sufficient resources and capabilities
+}
+```
+
+The built-in type [*cudaDeviceProp*](https://docs.nvidia.com/cuda/cuda-runtime-api/structcudaDeviceProp.html) is a C struct type with fields representing the properties of a CUDA device.
+
+## 3.7 Thread Scheduling and Latency Tolerance
+
