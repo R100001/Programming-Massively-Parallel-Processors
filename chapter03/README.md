@@ -1,4 +1,4 @@
-# Scalable Parallel Execution
+# 3. Scalable Parallel Execution
 
 *In [Chapter 2](https://github.com/R100001/Programming-Massively-Parallel-Processors/tree/master/chapter02), Data parallel computing, we learned to write a simple CUDA C program that launches a kernel and a grid of threads to operate on elements in onedimensional arrays.*
 
@@ -148,3 +148,74 @@ void colorToGreyscaleConversion(unsigned char * Pout,
     }
 }
 ```
+
+## 3.3 Image Blur: A More Complex Kernel
+
+Image blurring smooths out the abrupt variation of pixel values while preserving the edges that are essential for recognizing the key features of the image. Below there is an illustration of the effect of image blurring.
+
+<img src="../md_images/ch03/image_blur_illustration.png" width=640 height=320>
+
+Mathematically, an image blurring function calculates the value of an output image pixel as a weighted sum of a patch of pixels encompassing the pixel in the input image.
+
+Below there is an image blur kernel. Similar to that in **colorToGreyscaleConversion**, we use each thread to calculate an output pixel. That is, the thread to output data mapping remains the same. Thus, at the beginning of the kernel, we see the familiar calculation of the Col and Row indexes. We also see the familiar if-statement that verifies whether both Col and Row are within the valid range according to the height and width of the image.
+
+```C
+__global__
+void blurKernel(unsigned char *in, unsigned char *out, int width, int height)
+{
+    int Col = threadIdx.x + blockIdx.x * blockDim.x;
+    int Row = threadIdx.y + blockIdx.y * blockDim.y;
+    if (Col < width && Row < height) {
+        
+        int pixVal = 0;
+        int pixels = 0;
+
+        // Get the average of the surrounding BLUR_SIZE x BLUR_SIZE box
+        for (int blurRow = -BLUR_SIZE; blurRow < BLUR_SIZE + 1; blurRow++) {
+            for (int blurCol = -BLUR_SIZE; blurCol < BLUR_SIZE + 1; blurCol++) {
+                int curRow = Row + blurRow;
+                int curCol = Col + blurCol;
+                
+                // If the pixel is within the image, add its value to the sum
+                if(curRow > -1 && curRow < height && curCol > -1 && curCol < width) {
+                    pixVal += in[curRow*width + curCol];
+                    pixels++; // Keep track of the number of pixels in the avg
+                }
+            }
+        }
+        // Write our new pixel value out
+        out[Row*width + Col] = (unsigned char)(pixVal / pixels);
+    }
+}
+```
+
+The nested for-loop iterate through all pixels in the patch. We assume
+that the program has a defined constant, BLUR_SIZE.
+
+In the next two lines we calculate the current row and column and check if the pixel is within the image. If it is, we add its value to the sum and increment the number of pixels we accumulated. 
+
+The *in* pointer value uses the linearized index of *curRow* and *curCol* to access the value of the input pixel visited in the current iteration.
+
+In the last line we divide the sum by the number of pixels we accumulated (calculating the average) and write the new pixel value out.
+
+## 3.4 Synchronization and Transparent Scalability
+
+CUDA allows threads in the same block to coordinate their activities by using a barrier synchronization function *__syncthreads()*. When a thread calls *__syncthreads()*, it will be held at the calling location until every thread in the block reaches the location. This process ensures that all threads in a block have completed a phase of their execution of the kernel before any of them can proceed to the next phase.
+
+<img src="../md_images/ch03/barrier_synchronization.png" width=640 height=320>
+
+In CUDA, a *__syncthreads()* statement, if present, must be executed by all threads in a block. 
+
+When a __syncthread() statement is placed in an if-statement, either all or none of the threads in a block execute the path that includes the *__syncthreads()*. 
+
+For an if-then-else statement, if each path has a *__syncthreads()* statement, either all threads in a block execute the then-path or all of them execute the else-path. The two *__syncthreads()* are different barrier synchronization points. If a thread in a block executes the then-path and another executes the else-path, they would be waiting at different barrier synchronization points. They would end up waiting for each other forever.
+
+One needs to make sure that all threads involved in the barrier synchronization have access to the necessary resources to eventually arrive at the barrier. Otherwise, a thread that never arrives at the barrier synchronization point can cause everyone else to wait forever. CUDA runtime systems satisfy this constraint by assigning execution resources to all threads in a block as a unit. A block can begin execution only when the runtime system has secured all resources needed for all threads in the block to complete execution. When a thread of a block is assigned to an execution resource, all other threads in the same block are also assigned to the same resource. This condition ensures the temporal proximity of all threads in a block and prevents excessive or indefinite waiting time during barrier synchronization.
+
+This leads us to an important tradeoff in the design of CUDA barrier synchronization. By not allowing threads in different blocks to perform barrier synchronization with each other, the CUDA runtime system can execute blocks in any order relative to each other because none of them need to wait for each other.
+
+This allows us to run the same code on different hardware. The ability to execute the same application code on hardware with different numbers of execution resources is referred to as transparent scalability. This characteristic reduces the burden on application developers and improves the usability of applications.
+
+<img src="../md_images/ch03/transparent_scalability.png" width=640 height=320>
+
+## 3.5 Resource Assignment
