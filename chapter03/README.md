@@ -8,6 +8,8 @@
 
 *A CUDA programmer who masters these concepts is well-equipped to write and understand high-performance parallel applications.*
 
+---
+
 ## 3.1 CUDA Thread Organization
 
 All CUDA threads in a grid execute the same kernel function; they rely on coordinates to distinguish themselves from one another and identify the appropriate portion of data to process. These threads are organized into a two-level hierarchy: 
@@ -63,7 +65,7 @@ KernelFunction<<<dimGrid, dimBlock>>>(…);
 
 <img src="../md_images/ch03/cuda_grid_organization.png" width=640 height=360>
 
-<br>
+---
 
 ## 3.2 Mapping Threads to Multidimensional Data
 
@@ -149,6 +151,8 @@ void colorToGreyscaleConversion(unsigned char * Pout,
 }
 ```
 
+---
+
 ## 3.3 Image Blur: A More Complex Kernel
 
 Image blurring smooths out the abrupt variation of pixel values while preserving the edges that are essential for recognizing the key features of the image. Below there is an illustration of the effect of image blurring.
@@ -198,6 +202,8 @@ The *in* pointer value uses the linearized index of *curRow* and *curCol* to acc
 
 In the last line we divide the sum by the number of pixels we accumulated (calculating the average) and write the new pixel value out.
 
+---
+
 ## 3.4 Synchronization and Transparent Scalability
 
 CUDA allows threads in the same block to coordinate their activities by using a barrier synchronization function *__syncthreads()*. When a thread calls *__syncthreads()*, it will be held at the calling location until every thread in the block reaches the location. This process ensures that all threads in a block have completed a phase of their execution of the kernel before any of them can proceed to the next phase.
@@ -218,7 +224,7 @@ This allows us to run the same code on different hardware. The ability to execut
 
 <img src="../md_images/ch03/transparent_scalability.png" width=640 height=320>
 
-<br>
+---
 
 ## 3.5 Resource Assignment
 
@@ -227,6 +233,8 @@ Once a kernel is launched, the CUDA runtime system generates the corresponding g
 Each device sets a limit on the number of blocks that can be assigned to each SM. In situations where there is shortage of one or more types of resourcesmneeded for the simultaneous execution of blocks, the CUDA runtime automaticallymreduces the number of blocks assigned to each SM until their combined resourcemusage falls below the limit.
 
 One of the SM resource limitations is the number of threads that can be simultaneously tracked and scheduled. It takes hardware resources (built-in registers) for SMs to maintain the thread and block indexes and track their execution status. Therefore, each generation of hardware sets a limit on the number of blocks and number of threads that can be assigned to an SM.
+
+---
 
 ## 3.6 Querying Device Properties
 
@@ -251,6 +259,8 @@ for (int i = 0; i < dev_count; i++) {
 
 The built-in type [*cudaDeviceProp*](https://docs.nvidia.com/cuda/cuda-runtime-api/structcudaDeviceProp.html) is a C struct type with fields representing the properties of a CUDA device.
 
+---
+
 ## 3.7 Thread Scheduling and Latency Tolerance
 
 Thread scheduling is strictly an implementation concept. In the majority of implementations to date, a block assigned to an SM is further divided into 32 thread units called *warps*. 
@@ -270,3 +280,5 @@ A legimitate question is why we need to have so many warps in an SM if it can on
 When an instruction to be executed by a warp needs to wait for the result of a previously initiated long-latency operation, the warp is not selected for execution. Instead, another resident warp that is no longer waiting for results will be selected for execution. If more than one warp is ready for execution, a priority mechanism is used to select one for execution. This mechanism of filling the latency time of operations with work from other threads is often called “latency tolerance” or “latency hiding”.
 
 Warp scheduling is also used for tolerating other types of operation latencies, such as pipelined floating-point arithmetic and branch instructions. Given a sufficient number of warps, the hardware will likely find a warp to execute at any point in time, thus making full use of the execution hardware in spite of these long-latency operations. The selection of ready warps for execution avoids introducing idle or wasted time into the execution timeline, which is referred to as zero-overhead thread scheduling. With warp scheduling, the long waiting time of warp instructions is “hidden” by executing instructions from other warps. This ability to tolerate long-latency operations is the main reason GPUs do not dedicate nearly as much chip area to cache memories and branch prediction mechanisms as do CPUs. Thus, GPUs can dedicate more of its chip area to floating-point execution resources.
+
+---

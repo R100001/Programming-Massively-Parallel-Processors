@@ -6,6 +6,8 @@
 
 *Now all the new processors are parallel computers with 2 or more processing units, thus the number of applications that need to be developed as parallel programs has increased dramatically.*
 
+---
+
 ## 1.1 Heterogeneous Parallel Computing
 
 The semiconductor industry has settled on two main trajectories for designing microprecessors.
@@ -33,6 +35,8 @@ This design style is referred to as throughput-oriented design as it strives to 
 
 The GPUs are designed as parallel, throughput-oriented computing engines and they will not perform well on some tasks on which CPUs are designed to perform well. For programs that have one or very few threads, CPUs with lower operation latencies can achieve much higher performance than GPUs. When a program has a large number of threads, GPUs with higher execution throughput can achieve much higher performance than CPUs. Therefore, one should expect that many applications use both CPUs and GPUs, executing the sequential parts on the CPU and numerically intensive parts on the GPUs.
 
+---
+
 ## 1.2 Architecture of a Modern GPU
 
 A CUDA-cabable GPU is organized as an array of highly threaded streaming muliprocessors (SMs). 
@@ -44,6 +48,8 @@ SMs form a building block. The number of SMs per building block can be different
 Each GPU currently comes with gigabytes of Graphics Double Data Rate (GDDR), Synchronous DRAM (SDRAM), referred to as Global Memory.
 
 GPUs global memory communicates with the system memory over PCI-E transferring 8-16GB/S in each direction. More recent GPUS support NVLINK a CPU-GPU and GPU-GPU interconnect that allows transfers of up to 40 GB/s per channel.
+
+---
 
 ## 1.3 Why More Speed or Parallelism
 
@@ -59,6 +65,8 @@ User experiences can also be improved into the video game industry. Realistic mo
 
 All the new applications that we mentioned involve simulating a physical, concurrent world in different ways and at different levels, with tremendous amounts of data being processed.
 
+---
+
 ## 1.4 Speeding Up Real Applications
 
 What kind of speedup can we expect from parallelizing an application?  
@@ -70,3 +78,5 @@ On the other hand, if 99% of the execution time is in the parallel portion, a 10
 Therefore, it is very important that an application has the vast majority of its execution in the parallel portion for a massively parallel processor to effectively speed up its execution.
 
 In practice, straightforward parallelization of applications often saturates the memory (DRAM) bandwidth, resulting in only about a 10X speedup. The trick is to figure out how to get around memory bandwidth limitations, which involves doing one of many transformations to utilize specialized GPU on-chip memories to drastically reduce the number of accesses to the DRAM.
+
+---

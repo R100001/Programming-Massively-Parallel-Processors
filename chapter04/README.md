@@ -138,3 +138,159 @@ The table below shows the memory types of a CUDA device.
 
 ## 4.4 Tiling for Reduced Memory Traffic
 
+- The global memory is large but slow.
+- The shared memory is small but fast.
+
+A common strategy is to partition the data into subsets called tiles so that each tile fits into the shared memory. An important criterion is that kernel computation on these tiles can be performed independently of each other. 
+
+The concept of tiling can be illustrated using the matrix multiplication example as shown below.
+
+<img src="../md_images/ch04/mat_mul_example.png" width=480 height=480>
+
+The picture below showcases the access order in global memory by the threads in time.
+
+<img src="../md_images/ch04/global_mem_access.png" width=720 height=240>
+
+Each thread accesses four elements of M and four elements of N during execution. Among the four threads highlighted, a significant overlap occurs in the M and N elements they access. For instance, both thread<sub>0,0</sub> and thread<sub>0,1</sub> access M<sub>0,0</sub> and the rest of row 0 of M. Similarly, both thread<sub>0,1</sub> and thread<sub>1,1</sub> access N<sub>0,1</sub> and the rest of column 1 of N.
+
+If thread<sub>0,0</sub> and thread<sub>0,1</sub> can be made to collaborate so that these M elements are only loaded from the global memory once, the total number of accesses to the global memory can be reduced by half. Every M and N element is accessed exactly twice during the execution of block<sub>0,0</sub>. Therefore, if all four threads can be made to collaborate in their accesses to global memory, traffic to the global memory can be reduced by half.
+
+When the rate of DRAM requests exceeds the provisioned access bandwidth of the DRAM system, traffic congestion arises and the arithmetic units become idle. If multiple threads access data from the same DRAM location, they can potentially form a “carpool” and combine their accesses into one DRAM request. However, this process requires a similar execution schedule for the threads so that their data accesses can be combined.
+
+<img src="../md_images/ch04/access_timing.png" width=720 height=360>
+
+---
+
+In the context of parallel computing, tiling is a program transformation technique that localizes the memory locations accessed among threads and the timing of their accesses. It divides the long access sequences of each thread into phases and uses barrier synchronization to keep the timing of accesses to each section at close intervals. This technique controls the amount of on-chip memory required by localizing the accesses both in time and in space. In terms of our carpool analogy, we force the threads that form the “carpool” group to follow approximately the same execution timing.
+
+We now present a tiled matrix multiplication algorithm. The basic idea is for the threads to collaboratively load subsets of the M and N elements into the shared memory before they individually use these elements in their dot product calculation. The size of the shared memory is quite small, and the capacity of the shared memory should not be exceeded when these M and N elements are loaded into the shared memory. This condition can be satisfied by dividing the M and N matrices into smaller tiles so that they can fit into the shared memory. In the simplest form, the tile dimensions equal those of the block, as illustrated below.
+
+<img src="../md_images/ch04/mat_mul_tiling.png" width=400 height=400>
+
+<br>
+
+The execution phases are:
+
+<img src="../md_images/ch04/execution_phases.png" width=720 height=360>
+
+We can see that in the first phase the four threads will load the M and N elements that are needed to partially accumulate the value of the dot product. When all phases are completed the *PValue* will eventually hold the dot product of the two matrices.
+
+Note that the calculation happens in two phases when we use two 4x4 matrices and 2x2 tiles. In general the number of phases is equal to *MATRIX_WIDTH / TILE_WIDTH*.
+
+
+## 4.5 A Tiled Matrix Multiplication Kernel
+
+Α tiled matrix multiplication kernel is shown below.
+
+```C
+__global__ 
+void MatrixMulKernel(float* d_M, float* d_N, float* d_P, int Width) {
+
+    __shared__ float Mds[TILE_WIDTH][TILE_WIDTH];
+    __shared__ float Nds[TILE_WIDTH][TILE_WIDTH];
+
+    int bx = blockIdx.x; int by = blockIdx.y;
+    int tx = threadIdx.x; int ty = threadIdx.y;
+    
+    // Identify the row and column of the d_P element to work on
+    int Row = by * TILE_WIDTH + ty;
+    int Col = bx * TILE_WIDTH + tx;
+    
+    float Pvalue = 0;
+    // Loop over the d_M and d_N tiles required to compute d_P element
+    for (int ph = 0; ph < Width/TILE_WIDTH; ++ph) {
+        
+        // Collaborative loading of d_M and d_N tiles into shared memory
+        Mds[ty][tx] = d_M[Row*Width + ph*TILE_WIDTH + tx];
+        Nds[ty][tx] = d_N[(ph*TILE_WIDTH + ty)*Width + Col];
+        __syncthreads();
+
+
+        for (int k = 0; k < TILE_WIDTH; ++k)
+            Pvalue += Mds[ty][k] * Nds[k][tx];
+        __syncthreads();
+    }
+
+    d_P[Row*Width + Col] = Pvalue;
+}
+
+```
+
+Recall that the scope of shared memory variables is a block. Thus, one pair of *Mds* and *Nds* will be created for each block, and all threads of a block can access the same *Mds* and *Nds*. This is important since all threads in a block must have access to the M and N elements loaded into *Mds* and *Nds* by their peers so that they can use these values to satisfy their input needs.
+
+The *threadIdx* and *blockIdx* values are saved into automatic variables and thus into registers for fast access. Their scope is in each individual thread. They are initialized with the *threadIdx* and *blockIdx* values and used many times during the lifetime of the thread.
+
+The code assumes that each thread is responsible for calculating one P element. The horizontal (x) position, or the column index of the P element to be produced by a thread, can be calculated as *bx\*TILE_WIDTH+tx* because each block covers *TILE_WIDTH* elements in the horizontal dimension. A thread in block *bx* would have *bx* blocks of threads, or (*bx\*TILE_WIDTH*) threads, before it; they cover *bx\*TILE_WIDTH* elements of P. Another *tx* threads within the same block would cover another *tx* elements. Thus, the thread with *bx* and *tx* should be responsible for calculating the P element whose x index is *bx\*TILE_WIDTH+tx*. Similarly, the horizontal index is saved in the variable Col for the thread.
+
+<img src="../md_images/ch04/mat_indeces_calc.png" width=560 height=480>
+
+We initialize the *Pvalue* variable to 0.0 and iterate through the phases of the calculation. As noted before the number of phases is equal to *MATRIX_WIDTH / TILE_WIDTH*.
+
+In each iteration the threads collaboratively load the M and N elements that are needed. *d_M* and *d_N* are sirialized, therefore the indexing is done as follows.
+
+- For *d_M* we skip *Row\*Width* elements to get to Row<sup>th</sup> row of the M matrix. Then the current element would have *ph\*TILE_WIDTH* elements before it because we are in the *ph* phase. Finally each thread will load the element that corresponds to itself, that is, after another *tx* elements.
+
+- Similarly, for *d_N* we skip *(ph\*TILE_WIDTH+ty)\*Width* elements, because we are in the *ph* phase and the *ty* thread will load elements from the (ph\*TILE_WIDTH+ty)<sup>th</sup> row of the N matrix. Another *Col* elements are skipped because the thread is responsible for the *Col* element.
+
+After loading the elements we need to sychronize the threads using *__synchthreads()* so all the elements will be loaded in the shared memory before any calculations start.
+
+In the nested *for-loop* each thread partially accumulates the dot product of the M and N elements that is responsible for, using the elements previously loaded in the shared memory.
+
+Another *__synchthreads()* is used to ensure that the calculations are done before any other thread tries to load the next elements in the shared memory (in the next iteration).
+
+Finally, when the loop ends the *Pvalue* is assigned to the *d_P* element that corresponds to the thread.
+
+The tiled algorithm provides a substantial benefit. For matrix multiplication, the global memory accesses are reduced by a factor of TILE_WIDTH. If one uses 16 × 16 tiles, we can reduce the global memory accesses by a factor of 16. This increases the compute-to-global-memory-access ratio from 1 to 16. This improvement allows the memory bandwidth of a CUDA device to support a computation rate close to its peak performance; e.g. a device with 150 GB/s global memory bandwidth can approach ((150/4)*16) = 600 GFLOPS!
+
+While the performance improvement of the tiled matrix multiplication kernel is impressive, it includes a few simplifying assumptions. First, the width of the matrices is assumed to be a multiple of the width of the thread blocks. This assumption prevents the kernel from correctly processing arbitrary-sized matrices. The second assumption is that the matrices are square matrices, which is not always true in real-life settings.
+
+
+## 4.6 Boundary Checks
+
+With the previous kernel code, matrices with arbitary sizes cannot be handled. Assuming that we have two 3x3 M and N matrices and *TILE_WIDTH = 2*, the kernel would try to access elements either outside of the matrix (as shown for the M matrix) or the wrong index will be calculated for the linearized memory (as shown for the N matrix).
+
+<img src="../md_images/ch04/accesing_non_existend_elems.png" width=640 height=360>
+
+Note that these problematic accesses cannot be prevented by excluding the threads that do not calculate valid P elements. Those threads are still needed to cooperative load the M and N elements for the calculation.
+
+A solution is to check the boundaries in each load operation. If the index is within the boundaries the thread will load the element. Otherwise, the thread will load a number that will not corrupt the result and that is, 0.0.
+
+Finally, a thread should only store its final inner product value if it is responsible for calculating a valid P element.
+
+The kernel code with the additional boundary condition checks is shown below.
+
+```C
+
+// Loop over the M and N tiles required to compute P element
+for (int ph = 0; ph < ceil(Width/(float)TILE_WIDTH); ++ph) {
+
+    // Collaborative loading of M and N tiles into shared memory
+    if ((Row < Width) && (ph*TILE_WIDTH+tx) < Width)
+        Mds[ty][tx] = M[Row*Width + ph*TILE_WIDTH + tx];
+    if ((ph*TILE_WIDTH+ty) < Width && Col < Width)
+        Nds[ty][tx] = N[(ph*TILE_WIDTH + ty)*Width + Col];
+    __syncthreads();
+
+    for (int k = 0; k < TILE_WIDTH; ++k)
+        Pvalue += Mds[ty][k] * Nds[k][tx];
+    __syncthreads();
+}
+if ((Row<Width) && (Col<Width))
+    P[Row*Width + Col] = Pvalue;
+```
+
+With the boundary condition checks, the tile matrix multiplication kernel is just one more step away from being a general matrix multiplication kernel. In general, matrix multiplication is defined for rectangular matrices: a *j×k* M matrix mUltiplied by a *k×l* N matrix results in a *j×l* P matrix. Currently, our kernel can only handle square matrices.
+
+Fortunately, our kernel can be easily extended to a general matrix multiplication kernel by replacing the *Width* variable with the indended widths and heights of the input matrices (an example can be seen in [tiled_matrix_mul_shared_mem](https://github.com/R100001/Programming-Massively-Parallel-Processors/tree/master/chapter04/labs/tiled_matrix_mul_shared_mem)).
+
+---
+
+## 4.7 Memory as a Limiting Factor to Parallelism
+
+While CUDA registers and shared memory can be extremely effective in reducing the number of accesses to global memory, one must be careful to stay within the capacity of these memories. These memories are forms of resources necessary for thread execution. Each CUDA device offers limited resources, thereby limiting the number of threads that can simultaneously reside in the SM for a given application. In general, the more resources each thread requires, the fewer the threads that can reside in each SM, and likewise, the fewer the threads that can run in parallel in the entire device.
+
+The number of registers available to each SM varies from one device to another. An application can dynamically determine the number of registers available in each SM of the device used and choose a version of the kernel that uses the number of registers appropriate for the device. The number of registers can be determined by calling the *cudaGetDeviceProperties* function. Assume that the variable *&dev_prop* is passed to the function for the device property and the field *dev_prop.regsPerBlock* generates the number of registers available in each SM. The application can then divide this number by the targeted number of threads to reside in each SM to determine the number of registers that can be used in the kernel.
+
+The size of shared memory in each SM can also vary depending on the device. Each generation or model of device can have different amounts of shared memory in each SM. It is often desirable for a kernel to be able to use different amount of shared memory according to the amount available in the hardware. We may want a host code to dynamically determine the size of the shared memory and adjust the amount of shared memory used by a kernel, which can be done by calling the *cudaGetDeviceProperties* function. We make the assumption that variable *&dev_prop* is passed to the function and that field *dev_prop.sharedMemPerBlock* gives the number of registers available in each SM. The programmer can then determine the amount of shared memory that should be used by each block.
+
+---

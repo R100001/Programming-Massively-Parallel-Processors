@@ -4,6 +4,8 @@
 
 *CUDA C extends the popular C programming language with minimal new syntax and interfaces to let programmers target heterogeneous computing systems containing both CPU cores and massively parallel GPUs.*
 
+---
+
 ## 2.1 Data Parallelism
 
 When modern software applications run slowly, the problem is usually having too much data to be processed.
@@ -25,6 +27,8 @@ If we consider the input to be an image organized as an array I of RGB values an
 <img src="../md_images/ch02/greyscale_computation.png" width=640 height=240>
 
 None of these per-pixel computations depends on each other; all of them can be performed independently. Clearly the color-to-greyscale conversion exhibits a rich amount of data parallelism.
+
+---
 
 ## 2.2 CUDA C Program Structure
 
@@ -51,6 +55,8 @@ When all threads of a kernel complete their execution, the corresponding grid te
 Launching a kernel typically generates a large number of threads to exploit data parallelism. In the color-to-greyscale conversion example, each thread could be used to compute one pixel of the output array O.
 
 Cuda programmers can assume that these threads take very few clock cycles to generate and schedule due to efficient hardware support. This is contrast with traditional CPU threads that typically take thousands of clock cycles to generate and schedule.
+
+---
 
 ## 2.3 A Vector Addition Kernel
 
@@ -108,6 +114,7 @@ Part 1 of the function allocates space in the device (GPU) memory to hold copies
 
 - Note that the revised vecAdd function is essentially an outsourcing agent that ships input data to a device, activates the calculation on the device, and collects the results from the device.
 
+---
 
 ## 2.4 Device Global Memory and Data Transfer
 
@@ -193,7 +200,7 @@ void vecAdd(float* A, float* B, float* C, int n)
     cudaFree(d_C);
 }
 ```
-
+---
 
 ## 2.5 Kernel Functions and Threading
 
@@ -261,6 +268,7 @@ int vectAdd(float* A, float* B, float* C, int n)
 }
 ```
 
+---
 
 ## 2.6 Kernel Launch
 
@@ -291,3 +299,5 @@ void vecAdd(float* A, float* B, float* C, int n)
 ```
 
 Note that all the thread blocks operate on different parts of the vectors. They can be executed in any arbitrary order. Programmers must not make any assumptions regarding execution order. A small GPU with a small amount of execution resources may execute only one or two of these thread blocks in parallel. A larger GPU may execute 64 or 128 blocks in parallel. This gives CUDA kernels scalability in execution speed with hardware, that is, same code runs at lower speed on small GPUs andhigher speed on larger GPUs.
+
+---
