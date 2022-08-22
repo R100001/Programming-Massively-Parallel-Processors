@@ -1,4 +1,4 @@
-### *1. If we want to use each thread to calculate one output element of a vector addition, what would be the expression for mapping the thread/block indices to data index?*
+*1. If we want to use each thread to calculate one output element of a vector addition, what would be the expression for mapping the thread/block indices to data index?*
 
 - A. i=threadIdx.x + threadIdx.y;
 - B. i=blockIdx.x + threadIdx.x;
@@ -16,7 +16,7 @@ So blockIdx.x*blockDim.x gives the number of threads/elements before this block 
 
 ---
 
-### *2. Assume that we want to use each thread to calculate two (adjacent) elements of a vector addition. What would be the expression for mapping the thread/block indices to i, the data index of the first element to be processed by a thread?*
+*2. Assume that we want to use each thread to calculate two (adjacent) elements of a vector addition. What would be the expression for mapping the thread/block indices to i, the data index of the first element to be processed by a thread?*
 
 - A. i=blockIdx.x*blockDim.x + threadIdx.x +2;
 - B. i=blockIdx.x*threadIdx.x*2;
@@ -31,7 +31,7 @@ Each thread calculates 2 elements so the number of elements processed by the pre
 
 ---
 
-### *3. We want to use each thread to calculate two elements of a vector addition. Each thread block processes 2\*blockDim.x consecutive elements that form two sections. All threads in each block will first process a section first, each processing one element. They will then all move to the next section, each processing one element. Assume that variable i should be the index for the first element to be processed by a thread. What would be the expression for mapping the thread/block indices to data index of the first element?*
+*3. We want to use each thread to calculate two elements of a vector addition. Each thread block processes 2\*blockDim.x consecutive elements that form two sections. All threads in each block will first process a section first, each processing one element. They will then all move to the next section, each processing one element. Assume that variable i should be the index for the first element to be processed by a thread. What would be the expression for mapping the thread/block indices to data index of the first element?*
 
 - A. i=blockIdx.x*blockDim.x + threadIdx.x +2;
 - B. i=blockIdx.x*threadIdx.x*2;
@@ -46,7 +46,7 @@ Each thread calculates 2 elements so the number of elements processed by the pre
 
 ---
 
-### 4. *For a vector addition, assume that the vector length is 8000, each thread calculates one output element, and the thread block size is 1024 threads. The programmer configures the kernel launch to have a minimal number of thread blocks to cover all output elements. How many threads will be in the grid?*
+*4. For a vector addition, assume that the vector length is 8000, each thread calculates one output element, and the thread block size is 1024 threads. The programmer configures the kernel launch to have a minimal number of thread blocks to cover all output elements. How many threads will be in the grid?*
 
 - A. 8000
 - B. 8196
@@ -62,7 +62,7 @@ ceil(8000/1024) = 4 blocks
 
 ---
 
-### *5. If we want to allocate an array of v integer elements in CUDA device global memory, what would be an appropriate expression for the second argument of the cudaMalloc call?*
+*5. If we want to allocate an array of v integer elements in CUDA device global memory, what would be an appropriate expression for the second argument of the cudaMalloc call?*
 
 - A. n
 - B. v
@@ -77,7 +77,7 @@ cudaMalloc doesn't know for what kind of variable we want to allocate memory so 
 
 ---
 
-### *6. If we want to allocate an array of n floating-point elements and have a floating-point pointer variable d_A to point to the allocated memory, what would be an appropriate expression for the first argument of the cudaMalloc() call?*
+*6. If we want to allocate an array of n floating-point elements and have a floating-point pointer variable d_A to point to the allocated memory, what would be an appropriate expression for the first argument of the cudaMalloc() call?*
 
 - A. n
 - B. (void *) d_A
@@ -91,7 +91,7 @@ cudaMalloc needs a generic pointer.
 
 ---
 
-### *7. If we want to copy 3000 bytes of data from host array h_A (h_A is a pointer to element 0 of the source array) to device array d_A (d_A is a pointer to element 0 of the destination array), what would be an appropriate API call for this data copy in CUDA?*
+*7. If we want to copy 3000 bytes of data from host array h_A (h_A is a pointer to element 0 of the source array) to device array d_A (d_A is a pointer to element 0 of the destination array), what would be an appropriate API call for this data copy in CUDA?*
 
 - A. cudaMemcpy(3000, h_A, d_A, cudaMemcpyHostToDevice);
 - B. cudaMemcpy(h_A, d_A, 3000, cudaMemcpyDeviceTHost);
@@ -103,7 +103,7 @@ cudaMalloc needs a generic pointer.
 
 ---
 
-### *8. How would one declare a variable err that can appropriately receive returned value of a CUDA API call?*
+*8. How would one declare a variable err that can appropriately receive returned value of a CUDA API call?*
 
 - A. int err;
 - B. cudaError err;
@@ -115,7 +115,7 @@ cudaMalloc needs a generic pointer.
 
 ---
 
-### *9. A new summer intern was frustrated with CUDA. He has been complaining that CUDA is very tedious: he had to declare many functions that he plans to execute on both the host and the device twice, once as a host function and once as a device function. What is your response?*
+*9. A new summer intern was frustrated with CUDA. He has been complaining that CUDA is very tedious: he had to declare many functions that he plans to execute on both the host and the device twice, once as a host function and once as a device function. What is your response?*
 
 ```
 You can declare both functions at the same time using "__host__" and "__device__" before function declaration.
