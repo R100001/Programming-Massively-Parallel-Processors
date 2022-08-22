@@ -2,6 +2,9 @@
 
 *This program tests the performance of two different kernels. The add_v1 kernel performs addition having the i index as the fastest changing dimension while the add_v2 kernel has the j index as the fastest changing dimension.*
 
+---
+<br>
+
 [dim3](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#dim3) is a variable holding the x, y and z dimensions.
 
 "threads" and "blocks" are defined as dim3 variables and the x and y dimensions are used for this example.

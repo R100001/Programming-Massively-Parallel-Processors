@@ -10,7 +10,9 @@
  * 
 /*/
 
-#include <cstdio>
+#include <stdio.h>
+
+#define DEBUG
 
 #define NUM_CHANNELS 3
 
@@ -43,24 +45,29 @@ int main(int argc, char* argv[]){
     unsigned char* h_input_image, *h_output_image;
     unsigned char* d_input_image, *d_output_image;
 
-    if(argc != 2){
-        printf("Usage: %s <block_dim>\n", argv[0]);
+    if(argc != 4){
+        printf("Usage: %s <block_dim> <image_width> <image_height>\n", argv[0]);
         return 1;
     }
-    block_dim = strtol(argv[1], NULL, 10);
-
-    // Set the width and height of the image
-    image_width = 20;
-    image_height = 10;
+    block_dim = atoi(argv[1]);
+    image_width = atoi(argv[2]);
+    image_height = atoi(argv[3]);
     size = image_width * image_height;
 
-    // Allocate memory for the input and output images and initialize the input image
+    // Allocate memory for the input and output images on host
     h_input_image = (unsigned char*) malloc(NUM_CHANNELS * size * sizeof(unsigned char));
     h_output_image = (unsigned char*) malloc(size * sizeof(unsigned char));
+    
+    // Allocate memory for the input and output images on device
+    cudaMalloc((void**) &d_input_image, NUM_CHANNELS * size * sizeof(unsigned char));
+    cudaMalloc((void**) &d_output_image, size * sizeof(unsigned char));
+
+    // Initialize the input image with random values between 0 and 255
     srand(time(NULL));
     for(int i = 0; i < NUM_CHANNELS * size; ++i)
         h_input_image[i] = rand() % 256;
 
+#ifdef DEBUG
     // Show the input image
     for(int c = 0; c < NUM_CHANNELS; ++c){
         for(int i = 0; i < image_height; ++i){
@@ -72,26 +79,28 @@ int main(int argc, char* argv[]){
         printf("\n");
     }
     printf("\n");
+#endif
 
     // Copy the input image to the device
-    cudaMalloc((void**) &d_input_image, NUM_CHANNELS * size * sizeof(unsigned char));
-    cudaMalloc((void**) &d_output_image, size * sizeof(unsigned char));
     cudaMemcpy(d_input_image, h_input_image, NUM_CHANNELS * size * sizeof(unsigned char), cudaMemcpyHostToDevice);
 
     // Blur the image
-    dim3 dimGrid(ceil((float)image_width/block_dim), ceil((float)image_height/block_dim), 1);
     dim3 dimBlock(block_dim, block_dim, 1);
+    dim3 dimGrid(ceil((float)image_width/block_dim), ceil((float)image_height/block_dim), 1);
     color_to_grayscale_conversion<<<dimGrid, dimBlock>>>(d_input_image, d_output_image, image_width, image_height);
 
     // Copy the output back to the host
     cudaMemcpy(h_output_image, d_output_image, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 
+#ifdef DEBUG
     // Show the output image
     for(int i = 0; i < image_height; ++i){
         for(int j = 0; j < image_width; ++j)
             printf("%3d ", h_output_image[i * image_width + j]);
         printf("\n");
     }
+    printf("\n");
+#endif
 
     // Free the device memory
     cudaFree(d_input_image);

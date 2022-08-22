@@ -10,7 +10,9 @@
  * 
 /*/
 
-#include <cstdio>
+#include <stdio.h>
+
+#define DEBUG
 
 // Compute A * B
 // A and B can have arbitrary dimensions
@@ -32,18 +34,11 @@ __global__ void sgemm(float *A, float *B, float *C, int numARows, int numAColumn
 
 int main(int argc, char **argv) {
 
-    float *hostA;
-    float *hostB;
-    float *hostC;
-    float *deviceA;
-    float *deviceB;
-    float *deviceC;
-    int numARows;
-    int numAColumns;
-    int numBRows;
-    int numBColumns;
-    int numCRows;
-    int numCColumns;
+    float *hostA, *hostB, *hostC;
+    float *deviceA, *deviceB, *deviceC;
+    int numARows, numAColumns;
+    int numBRows, numBColumns;
+    int numCRows, numCColumns;
 
     if (argc != 5){
         printf("Usage: ./a.out <num_rows_A> <num_columns_A> <num_rows_B> <num_columns_B>\n");
@@ -83,6 +78,7 @@ int main(int argc, char **argv) {
         for (int j = 0; j < numBColumns; j++)
             hostB[i * numBColumns + j] = rand() / (float) RAND_MAX;
 
+#ifdef DEBUG
     // Show input matrices
     printf("A:\n");
     for (int i = 0; i < numARows; i++) {
@@ -99,6 +95,7 @@ int main(int argc, char **argv) {
         printf("\n");
     }
     printf("\n");
+#endif
 
     // Copy host memory to device
     cudaMemcpy(deviceA, hostA, numARows * numAColumns * sizeof(float), cudaMemcpyHostToDevice);
@@ -114,6 +111,7 @@ int main(int argc, char **argv) {
     // Copy device memory to host
     cudaMemcpy(hostC, deviceC, numCRows * numCColumns * sizeof(float), cudaMemcpyDeviceToHost);
 
+#ifdef DEBUG
     // Print results
     printf("C:\n");
     for (int i = 0; i < numCRows; i++) {
@@ -121,6 +119,7 @@ int main(int argc, char **argv) {
             printf("%f ", hostC[i * numCColumns + j]);
         printf("\n");
     }
+#endif
 
     // Free memory
     free(hostA);

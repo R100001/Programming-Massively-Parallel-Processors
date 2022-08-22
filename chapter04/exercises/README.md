@@ -42,6 +42,8 @@ This deteriorates the speedups that we can achieve by using shared memory.
 Shared memory is shared to all the threads in a block so the load operations will be much less.
 ```
 
+---
+
 *5.For our tiled matrix–matrix multiplication kernel, if we use a 32x32 tile, what is the reduction of memory bandwidth usage for input matrices M and N?*
 
 - A. 1/8 of the original usage
@@ -52,6 +54,8 @@ Shared memory is shared to all the threads in a block so the load operations wil
 **Correct answer:** C
 
 Read [here](../README.md#45-a-tiled-matrix-multiplication-kernel) for the explanation of the reduction of memory bandwidth usage.
+
+---
 
 *6.Assume that a CUDA kernel is launched with 1,000 thread blocks, with each having 512 threads. If a variable is declared as a local variable in the kernel, how many versions of the variable will be created through the lifetime of the execution of the kernel?*
 
@@ -66,6 +70,8 @@ Read [here](../README.md#45-a-tiled-matrix-multiplication-kernel) for the explan
 The variable is declared as a local variable in the kernel. This means that a copy will be created for each thread that will be generated.
 ```
 
+---
+
 *7.In the previous question, if a variable is declared as a shared memory variable, how many versions of the variable will be created throughout the lifetime of the execution of the kernel?*
 
 - A. 1
@@ -78,6 +84,8 @@ The variable is declared as a local variable in the kernel. This means that a co
 ```
 The variable is declared as a shared memory variable. This means that a copy will be created for each block that will be generated.
 ```
+
+---
 
 *8.Consider performing a matrix multiplication of two input matrices with dimensions N × N. How many times is each element in the input matrices requested from global memory in the following situations?*
 
@@ -92,6 +100,8 @@ B.
 If tiles of size T × T are used each element of the input matrices will be loaded ceil(N/T) times.
 For each load operation the element will be used T times.
 ```
+
+---
 
 *9.A kernel performs 36 floating-point operations and 7 32-bit word global memory accesses per thread. For each of the following device properties, indicate whether this kernel is compute- or memory-bound.*
 
@@ -124,6 +134,8 @@ B.
 
 8947848533.33 < 9586980571.43 so the kernel is compute-bound.
 ```
+
+---
 
 *10.To manipulate tiles, a new CUDA programmer has written the following device kernel, which will transpose each tile in a matrix. The tiles are of size BLOCK_WIDTH by BLOCK_WIDTH, and each of the dimensions of matrix A is known to be a multiple of BLOCK_WIDTH. The kernel invocation and code are shown below. BLOCK_WIDTH is known at compile time, but could be set anywhere from 1 to 20.*
 
@@ -160,3 +172,5 @@ B.
 To fix this problem __syncthreads() should be used between read and write operations in the kernel.
 
 ```
+
+---

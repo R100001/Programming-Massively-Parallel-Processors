@@ -12,13 +12,16 @@
 
 #include <stdio.h>
 
+#define DEBUG
+
 __global__
 void vec_add(int *in1, int *in2, int *out, int n)
 {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
 
-    if (i < n)
-        out[i] = in1[i] + in2[i];
+    if (i >= n) return;
+
+    out[i] = in1[i] + in2[i];
 }
 
 
@@ -26,11 +29,11 @@ int main(int argc, char* argv[])
 {
 
     int inputLength;
-    int *hostInput1;
-    int *hostInput2;
+
+    int *hostInput1, *hostInput2;
     int *hostOutput;
-    int *deviceInput1;
-    int *deviceInput2;
+
+    int *deviceInput1, *deviceInput2;
     int *deviceOutput;
 
     int blockSize;
@@ -49,6 +52,11 @@ int main(int argc, char* argv[])
     hostInput2 = (int*)malloc(inputLength * sizeof(int));
     hostOutput = (int*)malloc(inputLength * sizeof(int));
 
+    // Allocate device memory for the input and output data
+    cudaMalloc((void**) &deviceInput1, inputLength * sizeof(int));
+    cudaMalloc((void**) &deviceInput2, inputLength * sizeof(int));
+    cudaMalloc((void**) &deviceOutput, inputLength * sizeof(int));
+
     // Initialize the host vectors
     srand(time(NULL));
     for (int i = 0; i < inputLength; i++)
@@ -56,11 +64,6 @@ int main(int argc, char* argv[])
         hostInput1[i] = rand() % 100;
         hostInput2[i] = rand() % 100;
     }
-
-    // Allocate device memory for the input and output data
-    cudaMalloc((void**)&deviceInput1, inputLength * sizeof(int));
-    cudaMalloc((void**)&deviceInput2, inputLength * sizeof(int));
-    cudaMalloc((void**)&deviceOutput, inputLength * sizeof(int));
 
     // Copy the host input data to the device
     cudaMemcpy(deviceInput1, hostInput1, inputLength * sizeof(int), cudaMemcpyHostToDevice);
@@ -72,9 +75,11 @@ int main(int argc, char* argv[])
     // Copy the device output data to the host
     cudaMemcpy(hostOutput, deviceOutput, inputLength * sizeof(int), cudaMemcpyDeviceToHost);
 
+#ifdef DEBUG
     // Print the results
     for (int i = 0; i < inputLength; i++)
         printf("%d + %d = %d\n", hostInput1[i], hostInput2[i], hostOutput[i]);
+#endif
 
     // Free the device memory
     cudaFree(deviceInput1);
