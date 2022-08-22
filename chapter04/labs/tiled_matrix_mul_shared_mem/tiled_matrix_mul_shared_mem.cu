@@ -16,7 +16,7 @@
  * 
 /*/
 
-#include <cstdio>
+#include <stdio.h>
 
 #define TILE_WIDTH 16
 
@@ -71,18 +71,11 @@ __global__ void matrix_mul(float *A, float *B, float *C,
 
 int main(int argc, char **argv) {
 
-    float *hostA;
-    float *hostB;
-    float *hostC;
-    float *deviceA;
-    float *deviceB;
-    float *deviceC;
-    int numARows;
-    int numAColumns;
-    int numBRows;
-    int numBColumns;
-    int numCRows;
-    int numCColumns;
+    float *hostA, *hostB, *hostC;
+    float *deviceA, *deviceB, *deviceC;
+    int numARows, numAColumns;
+    int numBRows, numBColumns;
+    int numCRows, numCColumns;
 
     if (argc != 5){
         printf("Usage: ./a.out <num_rows_A> <num_columns_A> <num_rows_B> <num_columns_B>\n");
@@ -93,14 +86,14 @@ int main(int argc, char **argv) {
     numAColumns = atoi(argv[2]);
     numBRows = atoi(argv[3]);
     numBColumns = atoi(argv[4]);
+
+    numCRows = numARows;
+    numCColumns = numBColumns;
     
     if(numAColumns != numBRows) {
         printf("Number of columns in A must be the same as the number of rows in B\n");
         return 1;
     }
-
-    numCRows = numARows;
-    numCColumns = numBColumns;
 
     // Allocate memory on host
     hostA = (float *) malloc(numARows * numAColumns * sizeof(float));

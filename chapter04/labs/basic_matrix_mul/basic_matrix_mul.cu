@@ -49,14 +49,14 @@ int main(int argc, char **argv) {
     numAColumns = atoi(argv[2]);
     numBRows = atoi(argv[3]);
     numBColumns = atoi(argv[4]);
+
+    numCRows = numARows;
+    numCColumns = numBColumns;
     
     if(numAColumns != numBRows) {
         printf("Number of columns in A must be the same as the number of rows in B\n");
         return 1;
     }
-
-    numCRows = numARows;
-    numCColumns = numBColumns;
 
     // Allocate memory on host
     hostA = (float *) malloc(numARows * numAColumns * sizeof(float));
