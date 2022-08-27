@@ -84,11 +84,15 @@ ceil(2000 / 512) = 4
 - C. 3
 - D. 6
 
-**Correct answer:** B
+**Correct answer:** A
 
 ```
 2048 - ceil(2000 / 512) * 512 = 48
 ceil(48 / 32) = 2 (32 warps per SM)
+
+The last warp will not have a divergence because all the threads will execute the path that the if statement fails.
+
+So the correct answer is 1.
 ```
 
 ---

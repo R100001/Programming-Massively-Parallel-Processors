@@ -1,10 +1,12 @@
-# 4 Memory and Data Locality
+# 4. Memory and Data Locality
 
 *In this chapter, we will study how one can organize and position the data for efficient access by a massive number of threads.*
 
 *Although the scope we have covered is a very good start, the CUDA kernels that we have learned thus far will likely achieve only a tiny fraction of the potential speed of the underlying hardware. The poor performance is attributable to the long access latencies (hundreds of clock cycles) and finite access bandwidth of global memory, which is typically implemented with Dynamic Random Access Memory (DRAM).*
 
 *In this chapter we will learn to use different memory types to boost the execution efficiency of CUDA kernels.*
+
+---
 
 ## 4.1 Importance of Memory Access Efficiency
 
@@ -38,6 +40,7 @@ While 250 GFLOPS is a respectable number, it is only a fraction (2%) of the peak
 
 In order to achieve higher performance for a kernel, we need to reduce the number of global memory accesses ratio.
 
+---
 
 ## 4.2 Matrix Multiplication
 
@@ -98,6 +101,8 @@ One global memory access fetches an *M* element, and the other fetches an *N* el
 
 This ratio will likely result in less than 2% utilization of the peak execution speed of the modern GPUs. We need to increase the ratio by at least an order of magnitude for the computation throughput of modern devices to achieve good utilization.
 
+---
+
 ## 4.3 CUDA Memory Types
 
 A CUDA device contains several types of memory that can help programmers improve compute-to-global-memory-access ratio and thus achieve high execution speed. Below are the types of CUDA device memories.
@@ -135,6 +140,8 @@ Shared memory is accessible by all threads in a thread block, whereas register d
 The table below shows the memory types of a CUDA device.
 
 <img src="../md_images/ch04/CUDA_memory_types.png" width=800 height=240>
+
+---
 
 ## 4.4 Tiling for Reduced Memory Traffic
 
@@ -177,6 +184,7 @@ We can see that in the first phase the four threads will load the M and N elemen
 
 Note that the calculation happens in two phases when we use two 4x4 matrices and 2x2 tiles. In general the number of phases is equal to *MATRIX_WIDTH / TILE_WIDTH*.
 
+---
 
 ## 4.5 A Tiled Matrix Multiplication Kernel
 
@@ -244,6 +252,7 @@ The tiled algorithm provides a substantial benefit. For matrix multiplication, t
 
 While the performance improvement of the tiled matrix multiplication kernel is impressive, it includes a few simplifying assumptions. First, the width of the matrices is assumed to be a multiple of the width of the thread blocks. This assumption prevents the kernel from correctly processing arbitrary-sized matrices. The second assumption is that the matrices are square matrices, which is not always true in real-life settings.
 
+---
 
 ## 4.6 Boundary Checks
 
