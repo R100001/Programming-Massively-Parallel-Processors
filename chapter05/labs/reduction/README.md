@@ -2,6 +2,8 @@
 
 *This program implements reduction to accumulate the values of an array.*
 
+[An interesting discussion for reduction](https://developer.download.nvidia.com/assets/cuda/files/reduction.pdf)
+
 ---
 
 The host code:
@@ -28,3 +30,7 @@ The for-loop performs addition on elements that are *stride* away from each othe
 When the number of elements fall below the warp size, divergence will still occur.
 
 Finally each block will save the results in the lower part of the output array according to their id.
+
+---
+
+<img src="../../../md_images/ch05/revised_sum_reduction_kernel.png" width=640 height=400>
