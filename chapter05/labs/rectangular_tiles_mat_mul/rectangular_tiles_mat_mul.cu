@@ -1,15 +1,12 @@
 /*/
  * 
  *  This program implements matrix-matrix multiplication.
- *  The implementation uses tiles to reduce memory usage.
- *  Additionally shared memory is used to reduce global memory accesses.
- *  Global memory accesses are reduced relative to the tile dimensions.
- *  For example using 2x2 tiles, global memory accesses are reduced in half.
- *  For 16x16 tiles, global memory accesses are reduced by a factor of 16.
- *  The tile dimensions are equal to the block dimensions.  
+ *  The implementation uses rectangular tiles to reduce memory usage
+ *  loading the elements into shared memory.
+ *  Global memory accesses are reduced relatively to the tile dimensions.
  * 
  *  Compile with:
- *      nvcc tiled_matrix_mul_shared_mem.cu
+ *      nvcc rectangular_tiles_mat_mul.cu
  * 
  *  Run with:
  *     ./a.out <num_rows_A> <num_columns_A> <num_rows_B> <num_columns_B>
@@ -18,56 +15,72 @@
 
 #include <stdio.h>
 
-#define DEBUG
+//#define DEBUG
 
-#define TILE_WIDTH 16
+#define TILE_WIDTH 32
 
-// Compute C = A * B
-__global__ void matrix_mul(float *A, float *B, float *C,
-                           int num_rows_A, int num_cols_A,
-                           int num_rows_B, int num_cols_B,
-                           int num_rows_C, int num_cols_C) {
+// Compute P = M * N
+__global__ void matrix_mul(float *M, float *N, float *P,
+                           int num_rows_M, int num_cols_M,
+                           int num_rows_N, int num_cols_N,
+                           int num_rows_P, int num_cols_P) {
     
     // Initialize shared memory
-    __shared__ float ds_M[TILE_WIDTH][TILE_WIDTH];
-    __shared__ float ds_N[TILE_WIDTH][TILE_WIDTH];
+    __shared__ float ds_M[TILE_WIDTH][TILE_WIDTH    ];
+    __shared__ float ds_N[TILE_WIDTH][TILE_WIDTH * 2];
     
     int bx = blockIdx.x, by = blockIdx.y;
     int tx = threadIdx.x, ty = threadIdx.y;
 
-    int row = by * TILE_WIDTH + ty;
-    int col = bx * TILE_WIDTH + tx;
+    int row = by * TILE_WIDTH     + ty;
+    int col = bx * TILE_WIDTH * 2 + tx;
 
-    float Pvalue = 0;
+    float Pvalue1 = 0;
+    float Pvalue2 = 0;
     // Loop over the M and N tiles required to compute the P element
-    for (int ph = 0; ph < ceil(num_cols_A/(float)TILE_WIDTH); ph++) {
+    for (int ph = 0; ph < ceil(num_cols_M/(float)TILE_WIDTH); ph++) {
 
         // Collaborative loading of M and N tiles into shared memory
-        if (row < num_rows_A && ph * TILE_WIDTH + tx < num_cols_A)
-            ds_M[ty][tx] = A[row * num_cols_A + ph * TILE_WIDTH + tx];
+        if (row < num_rows_M && ph * TILE_WIDTH + tx < num_cols_M)
+                         //M[row][ph * TILE_WIDTH + tx];
+            ds_M[ty][tx] = M[row * num_cols_M + ph * TILE_WIDTH + tx];
         else
             ds_M[ty][tx] = 0;
 
-        if (col < num_cols_B && ph * TILE_WIDTH + ty < num_rows_B)
-            ds_N[ty][tx] = B[(ph * TILE_WIDTH + ty) * num_cols_B + col];
+        if (ph * TILE_WIDTH + ty < num_rows_N && col < num_cols_N)
+                         //N[ph * TILE_WIDTH + ty][col];
+            ds_N[ty][tx] = N[(ph * TILE_WIDTH + ty) * num_cols_N + col];
         else
             ds_N[ty][tx] = 0;
+
+        if(ph * TILE_WIDTH + ty < num_rows_N && TILE_WIDTH + tx < num_cols_N)
+                                      //N[ph * TILE_WIDTH + ty][TILE_WIDTH + col];
+            ds_N[ty][TILE_WIDTH + tx] = N[(ph * TILE_WIDTH + ty) * num_cols_N + TILE_WIDTH + col];
+        else
+            ds_N[ty][TILE_WIDTH + tx] = 0;
 
         // Synchronize to make sure the tiles are loaded
         __syncthreads();
 
         // Compute the P element
-        for (int k = 0; k < TILE_WIDTH; k++)
-            Pvalue += ds_M[ty][k] * ds_N[k][tx];
+        for (int k = 0; k < TILE_WIDTH; k++){
+            Pvalue1 += ds_M[ty][k] * ds_N[k][tx];
+            Pvalue2 += ds_M[ty][k] * ds_N[k][TILE_WIDTH + tx];
+        }
         
-        // Synchronize to make sure the P elembasic_matrix_mulent is computed
+        // Synchronize to make sure the Pvalues are computed
         // before other threads load new tiles
         __syncthreads();
     }
 
-    // Store the P element in C
-    if (row < num_rows_C && col < num_cols_C)
-        C[row * num_cols_C + col] = Pvalue;
+    // Store the Pvalues in P
+    if (row < num_rows_P && col < num_cols_P)
+      //P[row][col];
+        P[row * num_cols_P + col] = Pvalue1;
+
+    if (row < num_rows_P && TILE_WIDTH + col < num_cols_P)
+      //P[row][TILE_WIDTH + col];
+        P[row * num_cols_P + TILE_WIDTH + col] = Pvalue2;
 }
 
 
@@ -142,7 +155,7 @@ int main(int argc, char **argv) {
 
     // Launch kernel
     dim3 blockDim(TILE_WIDTH, TILE_WIDTH);
-    dim3 gridDim(ceil((float)numCColumns / blockDim.x), ceil((float)numCRows / blockDim.y));
+    dim3 gridDim(ceil(((float)numCColumns / blockDim.x) / 2), ceil((float)numCRows / blockDim.y));
     matrix_mul<<<gridDim, blockDim>>>(deviceA, deviceB, deviceC,
                                       numARows, numAColumns,
                                       numBRows, numBColumns,

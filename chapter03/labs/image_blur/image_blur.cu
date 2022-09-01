@@ -6,7 +6,7 @@
  *      nvcc image_blur.cu
  * 
  *  Run with:
- *     ./a.out <block_size>
+ *     ./a.out <block_size> <image_width> <image_height>
  * 
 /*/
 

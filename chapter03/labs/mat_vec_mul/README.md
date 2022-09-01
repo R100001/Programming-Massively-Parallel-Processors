@@ -1,4 +1,4 @@
-## Exercise 2
+## Matrix-Vector Multiplication
 
 *Code for Exercise 2 from [here](../../exercises/README.MD)*
 

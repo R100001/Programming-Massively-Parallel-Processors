@@ -198,7 +198,7 @@ Note that the performance impact of control divergence decreases with the size o
 
 ---
 
-### Reduction
+### [Reduction](https://developer.download.nvidia.com/assets/cuda/files/reduction.pdf)
 
 Control divergence also naturally arises in some important parallel algorithms where the number of threads participating in the computation varies over time. We will use a reduction algorithm to illustrate such behavior.
 

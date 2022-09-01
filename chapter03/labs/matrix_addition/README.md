@@ -1,4 +1,4 @@
-## Exercise 1
+## Matrix Addition
 
 *Code for Exercise 1 from [here](../../exercises/README.MD)*
 

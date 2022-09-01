@@ -10,7 +10,7 @@
 
 - *E. Analyze the pros and cons of each kernel design above.*
 
-A, B, C, D. See [exercise01.cu](../labs/exercise01/).
+A, B, C, D. See [here](../labs/matrix_addition/).
 
 ```
 E. The kernel in questions B and D are the most efficient because they compute elements next to each other. The kernel in question C computes elements that are far away from each other and the memory operations are the most expensive, thus the least efficient.
@@ -24,7 +24,7 @@ In the second case if n is small the number or threads may be not efficient for 
 
 *2. A matrix–vector multiplication takes an input matrix B and a vector C and produces one output vector A. Each element of the output vector A is the dot product of one row of the input matrix B and C, i.e., A[i] = ∑j B[i][j] + C[j]. For simplicity, we will only handle square matrices whose elements are single-precision floating-point numbers. Write a matrix–vector multiplication kernel and a host stub  function that can be called with four parameters: pointer-to-the-output matrix, pointer-to-the-input matrix, pointer-to-the-input vector, and the number of elements in each dimension. Use one thread to calculate an output vector element.*
 
-See [exercise02.cu](../labs/exercise02/).
+See [here](../labs/mat_vec_mul/).
 
 ---
 
