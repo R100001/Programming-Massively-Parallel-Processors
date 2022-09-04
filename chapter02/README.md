@@ -212,7 +212,7 @@ The total number of threads in each thread block is specified by the host code w
 
 The blockDim variable is of struct type with three unsigned integer fields: x, y, and z, which help a programmer to organize the threads into a one-, two-, or three-dimensional array. For a one-dimensional organization, only the x field will be used. For a two-dimensional organization, x and y fields will be used. For a three dimensional structure, all three fields will be used. The choice of dimensionality for organizing threads usually reflects the dimensionality of the data.
 
-In general, the number of threads **in each dimension** of thread blocks should be multiplies of 32 due to hardware efficiency reasons.
+In general, the number of threads in a block should be multiple of 32 due to hardware efficiency reasons.
 
 CUDA kernels have access to two more built-in variables (threadIdx, blockIdx) that allow threads to distinguish among themselves and to determine the area of data each thread is to work on. Both of the variables are of struct type with three unsigned integer fields: x, y, and z.
 
