@@ -17,6 +17,7 @@ In the device code
 We allocate shared memory for the tiles.
 
 The shared memory allocated for the M matrix tiles is *TILE_WIDTH \* TILE_WIDTH*
+
 The shared memory allocated for the N matrix tiles is *TILE_WIDTH \* TILE_WIDTH \* 2*
 
 ```
@@ -58,7 +59,7 @@ for (int k = 0; k < TILE_WIDTH; k++){
 
 Again the code is the same as the simple tiled matrix multiplication with square tiles but we also accumulate the extra value.
 
-After all the phases are complete we assign the computed values to the output matrix checking first for boundary conditions.
+After all the phases are completed we assign the computed values to the output matrix checking first for boundary conditions.
 
 The second output value is again *TILE_WIDTH* elements away from the first element of the output matrix.
 
@@ -66,4 +67,4 @@ The second output value is again *TILE_WIDTH* elements away from the first eleme
 
 <br>
 
-<img src="../../../md_images/ch05/rectangular_tiles_mat_mul.png" width=560 height=500>
+<img src="../../images/rectangular_tiles_mat_mul.png" width=560 height=500>

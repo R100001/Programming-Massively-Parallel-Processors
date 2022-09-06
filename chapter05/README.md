@@ -10,11 +10,11 @@ One of the most important factors of CUDA kernel performance is accessing data i
 
 In order to understand how to effectively use the coalescing hardware, we need to review how the memory addresses are formed in accessing C multidimensional array elements. Multidimensional array elements in C and CUDA are placed into the linearly addressed memory space according to the row-major convention as shown below.
 
-<img src="../md_images/ch05/linearized_memory.png" width=640 height=320>
+<img src="images/linearized_memory.png" width=640 height=320>
 
 For the [simple matrix multiplication kernel](../chapter04/labs/basic_matrix_mul), each thread accesses a row of the M array and a column of the N array as shown below.
 
-<img src="../md_images/ch05/memory_access_basic_mat_mul.png" width=480 height=240>
+<img src="images/memory_access_basic_mat_mul.png" width=480 height=240>
 
 In order to understand why the pattern in (B) is more favorable than that in (A), we need to review how these matrix elements are accessed.
 
@@ -37,7 +37,7 @@ Col = blockIdx.x * blockDim.x + threadIdx.x;
 
 Since the value of *blockIdx.x* and *blockDim.x* are of the same value for all threads in the same block, the only part of *k\*Width+Col* that varies across a thread block is *threadIdx.x*. Since adjacent threads have consecutive *threadIdx.x* values, their accessed elements will have consecutive addresses.
 
-<img src="../md_images/ch05/coalesced_access_pattern.png" width=640 height=400>
+<img src="images/coalesced_access_pattern.png" width=640 height=400>
 
 <br>
 
@@ -56,7 +56,7 @@ Col = blockIdx.y * blockDim.y + threadIdx.y;
 
 Since the value of *blockIdx.y* and *blockDim.y* are of the same value for all threads in the same block, the only part of *Row* that varies across a thread block is *threadIdx.y*. Since adjacent threads have consecutive *threadIdx.y* values, their accessed elements will **not** have consecutive addresses (the *Row* value is multiplied with *Width* which is equal to 4).
 
-<img src="../md_images/ch05/not_coalesced_access_pattern.png" width=640 height=480>
+<img src="images/not_coalesced_access_pattern.png" width=640 height=480>
 
 As a result, when a kernel loop iterates through a row, the accesses to global memory are much less efficient than the case where a kernel iterates through a column.
 
@@ -64,7 +64,7 @@ As a result, when a kernel loop iterates through a row, the accesses to global m
 
 If an algorithm intrinsically requires a kernel code to iterate through data along the row direction, one can use the shared memory to enable memory coalescing. The technique, called corner turning, is illustrated below for matrix multiplication.
 
-<img src="../md_images/ch05/corner_turning.png" width=640 height=480>
+<img src="images/corner_turning.png" width=640 height=480>
 
 Once the data is in shared memory, they can be accessed either on a row basis or a column basis with much less performance variation because the shared memories are implemented as intrinsically high-speed on-chip memory that does not require coalescing to achieve high data access rate.
 
@@ -150,7 +150,7 @@ DRAM bursting is a form of parallel organization: multiple locations around are 
 
 At the highest level, a processor contains one or more channels. Each channel is a memory controller with a bus that connects a set of DRAM banks to the processor. Below is illustrated a processor that contains four channels, each with a bus that connects four DRAM banks to the processor.
 
-<img src="../md_images/ch05/dram_organization.png" width=540 height=270>
+<img src="images/dram_organization.png" width=540 height=270>
 
 In real systems, a processor typically has one to eight channels and each channel is connected to a large number of banks. 
 
@@ -162,7 +162,7 @@ For each channel, the number of banks connected to it is determined by the numbe
 
 Below the data transfer timing is illustrated when a single bank is connected to a channel (A). It shows the timing of two consecutive memory read accesses to the DRAM cells in the bank.
 
-<img src="../md_images/ch05/bank_bursts.png" width=540 height=270>
+<img src="images/bank_bursts.png" width=540 height=270>
 
 In reality, the access latency (light sections) is much longer than the data transfer time (dark section). It should be apparent that the access-transfer timing of a one-bank organization would grossly underutilize the data transfer bandwidth of the channel bus. This would be totally unacceptable. 
 
@@ -180,7 +180,7 @@ Thread blocks are partitioned into warps based on thread indices. If a thread bl
 
 For blocks that consist of multiple dimensions of threads, the dimensions will be projected into a linearized row-major order before partitioning into warps. The linear order is determined by placing the rows with larger y and z coordinates after those with lower ones.
 
-<img src="../md_images/ch05/2D_thread_organization.png" width=640 height=320>
+<img src="images/2D_thread_organization.png" width=640 height=320>
 
 The pattern is the same with the row-major layout of two-dimensional arrays.
 
@@ -230,7 +230,7 @@ The __syncthreads() statement in the for-loop ensures that all partial sums for 
 
 The execution of the kernel is illustrated below.
 
-<img src="../md_images/ch05/sum_reduction_kernel.png" width=560 height=320>
+<img src="images/sum_reduction_kernel.png" width=560 height=320>
 
 Let us analyze the total amount of work done by the kernel. Assume that the total number of elements to be reduced is N. The first round requires N/2 additions. The second round requires N/4 additions. The final round has only one addition. There are log2(N) rounds. The total number of additions performed by the kernel is
 
@@ -256,7 +256,7 @@ for (unsigned int stride = blockDim.x / 2; stride >= 1; stride = stride >> 1)
 }
 ```
 
-<img src="../md_images/ch05/revised_sum_reduction_kernel.png" width=560 height=320>
+<img src="images/revised_sum_reduction_kernel.png" width=560 height=320>
 
 The loop divides the stride by 2 before entering the next iteration. Thus for the second iteration, the stride variable value is one-quarter of the section size. That is, the threads add elements that are quarter a section away from each other during the second iteration.
 
@@ -292,7 +292,7 @@ An important algorithmic decision in performance tuning is the granularity of th
 
 Such an opportunity is illustrated below in matrix multiplication. The tiled algorithm uses one thread to compute one element of the output P matrix. This requires a dot-product between one row of M and one column of N. With the original tiled algorithm, the same M row is redundantly loaded by the two blocks assigned to generate these two P tiles. One can eliminate this redundancy by merging the two thread blocks into one. Each thread in the new thread block now calculates two P elements.
 
-<img src="../md_images/ch05/rectangular_tiles_mat_mul.png" width=560 height=560>
+<img src="images/rectangular_tiles_mat_mul.png" width=560 height=560>
 
 The potential downside is that the new kernel now uses even more registers, shared memory and the number of blocks that can be running on each SM may decrease.
 

@@ -1,13 +1,13 @@
 *1. Draw the equivalent of*
 
 <p align="center">
-    <img src="../../md_images/ch06/repr_nums_nozero_range.png" width=480 height=80>
+    <img src="../images/repr_nums_nozero_range.png" width=480 height=80>
 </p>
 
 *for a 6-bit format (1-bit sign, 3-bit mantissa, 2-bit exponent). Use your result to explain what each additional mantissa bit does to the set of representable numbers on the number line.*
 
 <p align="center">
-    <img src="../../md_images/ch06/repr_nums_ex1.png" width=480 height=80>
+    <img src="../images/repr_nums_ex1.png" width=480 height=80>
 </p>
 
 ```
@@ -19,13 +19,13 @@ Adding one more bit to the mantissa (M) increases the number of representable nu
 *2. Draw the equivalent of*
 
 <p align="center">
-    <img src="../../md_images/ch06/repr_nums_nozero_range.png" width=480 height=80>
+    <img src="../images/repr_nums_nozero_range.png" width=480 height=80>
 </p>
 
 *for another 6-bit format (1-bit sign, 2-bit mantissa, 3-bit exponent). Use your result to explain what each additional exponent bit does to the set of representable numbers on the number line.*
 
 <p align="center">
-    <img src="../../md_images/ch06/repr_nums_ex2.png" width=480 height=80>
+    <img src="../images/repr_nums_ex2.png" width=480 height=80>
 </p>
 
 ```

@@ -63,7 +63,7 @@ dim3 dimBlock(4, 2, 2);
 KernelFunction<<<dimGrid, dimBlock>>>(…);
 ```
 
-<img src="../md_images/ch03/cuda_grid_organization.png" width=640 height=360>
+<img src="images/cuda_grid_organization.png" width=640 height=360>
 
 ---
 
@@ -71,7 +71,7 @@ KernelFunction<<<dimGrid, dimBlock>>>(…);
 
 The choice of 1D, 2D, or 3D thread organizations is usually based on the nature of the data. Pictures are 2D array of pixels. Using a 2D grid that consists of 2D blocks is often convenient for processing the pixels in a picture.
 
-<img src="../md_images/ch03/proc_img_2D_thread.png" width=640 height=360>
+<img src="images/proc_img_2D_thread.png" width=640 height=360>
 
 Assume that we decided to use a $16 * 16$ block, with 16 threads in the x and y direction and we want to process a $76 * 62$ picture as shown above.
 
@@ -92,7 +92,7 @@ Ideally, we would like to access d_Pin as a two-dimensional array where an eleme
 
 A way to linearize a two-dimensional array is place all elements of the same row into consecutive locations as shown below.
 
-<img src="../md_images/ch03/row_major_layout.png" width=640 height=240>
+<img src="images/row_major_layout.png" width=640 height=240>
 
 The kernel code uses the formula:
 
@@ -157,7 +157,7 @@ void colorToGreyscaleConversion(unsigned char * Pout,
 
 Image blurring smooths out the abrupt variation of pixel values while preserving the edges that are essential for recognizing the key features of the image. Below there is an illustration of the effect of image blurring.
 
-<img src="../md_images/ch03/image_blur_illustration.png" width=640 height=320>
+<img src="images/image_blur_illustration.png" width=640 height=320>
 
 Mathematically, an image blurring function calculates the value of an output image pixel as a weighted sum of a patch of pixels encompassing the pixel in the input image.
 
@@ -208,7 +208,7 @@ In the last line we divide the sum by the number of pixels we accumulated (calcu
 
 CUDA allows threads in the same block to coordinate their activities by using a barrier synchronization function *__syncthreads()*. When a thread calls *__syncthreads()*, it will be held at the calling location until every thread in the block reaches the location. This process ensures that all threads in a block have completed a phase of their execution of the kernel before any of them can proceed to the next phase.
 
-<img src="../md_images/ch03/barrier_synchronization.png" width=640 height=320>
+<img src="images/barrier_synchronization.png" width=640 height=320>
 
 In CUDA, a *__syncthreads()* statement, if present, must be executed by all threads in a block. 
 
@@ -222,7 +222,7 @@ This leads us to an important tradeoff in the design of CUDA barrier synchroniza
 
 This allows us to run the same code on different hardware. The ability to execute the same application code on hardware with different numbers of execution resources is referred to as transparent scalability. This characteristic reduces the burden on application developers and improves the usability of applications.
 
-<img src="../md_images/ch03/transparent_scalability.png" width=640 height=320>
+<img src="images/transparent_scalability.png" width=640 height=320>
 
 ---
 
@@ -269,7 +269,7 @@ The size of warps is implementation-specific. Warps are not part of the CUDA spe
 
 The warp is the unit of thread scheduling in SMs. Fig. 3.13 shows the division of blocks into warps in an implementation. Each warp consists of 32 threads of consecutive threadIdx values. In this example, three blocks—Block 1, Block 2, and Block 3—are assigned to an SM. Each of the three blocks is further divided into warps for scheduling purposes.
 
-<img src="../md_images/ch03/thread_partitions.png" width=640 height=480>
+<img src="images/thread_partitions.png" width=640 height=480>
 
 An SM is designed to execute all threads in a warp following the Single Instruction, Multiple Data (SIMD) model—i.e., at any instant in time, one instruction is fetched and executed for all threads in the warp. These threads will apply the same instruction to different portions of the data. Consequently, all threads in a warp will always have the same execution timing.
 

@@ -33,4 +33,4 @@ Finally each block will save the results in the lower part of the output array a
 
 ---
 
-<img src="../../../md_images/ch05/revised_sum_reduction_kernel.png" width=640 height=400>
+<img src="../../images/revised_sum_reduction_kernel.png" width=640 height=400>

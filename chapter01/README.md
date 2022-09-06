@@ -43,7 +43,7 @@ A CUDA-cabable GPU is organized as an array of highly threaded streaming mulipro
 
 SMs form a building block. The number of SMs per building block can be different from one generation to another. Each SM has streaming processors (SPs) that share control logic and instruction cache.
 
-<img src="../md_images/ch01/architecture_cuda_GPU.png" width=640 height=360>
+<img src="images/architecture_cuda_GPU.png" width=640 height=360>
 
 Each GPU currently comes with gigabytes of Graphics Double Data Rate (GDDR), Synchronous DRAM (SDRAM), referred to as Global Memory.
 
