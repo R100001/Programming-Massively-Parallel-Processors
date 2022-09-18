@@ -131,7 +131,7 @@ Thus, placing the operands in registers can improve execution speed.
 
 Below a SM is illustrated showing the shared memory and registers in a CUDA device.
 
-<img src="../md_images/ch04/SM_shared_registers.png" width=480 height=320>
+<img src="images/SM_shared_registers.png" width=480 height=320>
 
 Shared memory is designed as part of the memory space that resides on the processor chip. When the processor accesses data that reside in the shared memory, it needs to perform a memory load operation, similar to accessing data in the global memory. However, because shared memory resides on-chip, it can be accessed with much lower latency and much higher throughput than the global memory. Shared memory has longer latency and lower bandwidth than registers because of the need to perform a load operation.
 
