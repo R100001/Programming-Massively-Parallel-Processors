@@ -40,7 +40,7 @@ Because all mantissa values that satisfy the restriction are of the form $1.XX$,
 
 The IEEE standard adopts an excess or biased encoding convention for E. If e bits are used to represent the exponent E, (2<sup>e−1</sup>–1) is added to the two’s complement representation for the exponent to form its excess representation. A two’s complement representation is a system where the negative value of a number can be derived by first complementing every bit of the value and adding one to the result. In our 3-bit exponent representation, there are three bits in the exponent (e = 3). Therefore, the value 2<sup>3–1</sup>−1 = 011 will be added to the 2’s complement representation of the exponent value. The excess-3 encoding is is shown below.
 
-<img src="images/excess3_encoding.png" width=560 height=280>
+<img src="images/excess3_encoding.png">
 
 The advantage of excess representation is that an unsigned comparator can be used to compare signed numbers. This is a desirable property for hardware implementation since unsigned comparators are smaller and faster than signed comparators.
 
@@ -61,23 +61,23 @@ $(-1)^S*1.M*2^{E-(2^{n-1} - 1)}$
 The representable numbers of a representation format are the numbers that can be exactly represented in the format. For example, if one uses a 3-bit unsigned integer format, the representable numbers are shown below.
 
 <p align="center">
-    <img src="images/repr_nums_uint3.png" width=160 height=240>
+    <img src="images/repr_nums_uint3.png">
 </p>
 
 <p align="center">
-    <img src="images/repr_nums_uint3_range.png" width=480 height=60>
+    <img src="images/repr_nums_uint3_range.png">
 </p>
 
 ### No-Zero
 
 Below, we show all the representable numbers of what we have so far and two variations. We use a 5-bit format to keep the size of the table manageable. The format consists of 1-bit S, 2-bit E (excess-1 coded), and 2-bit M (with “1.” part omitted). The no-zero column gives the representable numbers of the format we discussed thus far. Note that with this format, 0 is not one of the representable numbers.
 
-<img src="images/repr_nums_multiple_formats.png" width=640 height=400>
+<img src="images/repr_nums_multiple_formats.png">
 
 A quick look at how these representable numbers populate the number line, as shown below, provides further insights about these representable numbers. We show only the positive representable numbers. The negative numbers are symmetric to their positive counterparts on the other side of 0.
 
 <p align="center">
-    <img src="images/repr_nums_nozero_range.png" width=480 height=80>
+    <img src="images/repr_nums_nozero_range.png">
 </p>
 
 We can make five observations:
@@ -97,7 +97,7 @@ We can make five observations:
 One method that can accommodate 0 is the abrupt underflow convention. Whenever E is 0, the number is interpreted as 0. In the 5-bit example format, this method takes away eight representable numbers (four positive, four negative) in the vicinity of 0 and makes them all 0. Although this method makes 0 a representable number, it creates an even larger gap between representable numbers in 0’s vicinity.
 
 <p align="center">
-    <img src="images/repr_nums_abrupt_underflow_range.png" width=480 height=80>
+    <img src="images/repr_nums_abrupt_underflow_range.png">
 </p>
 
 ### Denormalization
@@ -105,7 +105,7 @@ One method that can accommodate 0 is the abrupt underflow convention. Whenever E
 The IEEE standard adopted denormalization. Whenever E = 0, the mantissa (M) is no longer assumed to be $0=1.XX$. Rather, it is assumed to be $1.XX$. Additionally, the value of the exponent is assumed to be the same as the previous interval (0 instead of -1). The representation now has uniformly spaced representable numbers in the close vicinity of 0.
 
 <p align="center">
-    <img src="images/repr_nums_denorm_range.png" width=480 height=80>
+    <img src="images/repr_nums_denorm_range.png">
 </p>
 
 Note that the distances between representable numbers in the last two intervals are identical. In general if the n-bit exponent is 0, the value is equal to:
@@ -124,7 +124,7 @@ In summary, the precision of a floating-point representation is measured by the 
 
 All special bit patterns of the IEEE floating-point format are described below:
 
-<img src="images/special_bit_patterns.png" width=400 height=200>
+<img src="images/special_bit_patterns.png">
 
 All other numbers are normalized floating-point numbers. 
 

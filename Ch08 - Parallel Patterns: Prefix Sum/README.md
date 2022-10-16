@@ -61,7 +61,7 @@ We start with a simple parallel inclusive scan algorithm by performing a reducti
 
 The first method is based on Kogge-Stone algorithm.
 
-<img src="images/kogge_stone_design.png" width=640 height=560>
+<img src="images/kogge_stone_design.png">
 
 The algorithm is an in-place scan algorithm, that operates on an array XY that originally contains input elements. Before the algorithm begins $XY[i]$ will contain the input element $x_i$. In each iteration the $XY[i]$ will contain the sum of at most $2^n$ previous elements with $n$ being the iteration number. For example at the end of the second iteration $XY[i]$ will contain $x_{i-3} + x_{i-2} + x_{i-1} + x_i$.
 
@@ -167,14 +167,14 @@ The Kogge-Stone algorithm is not work-efficient. The intermediate results can be
 
 An illustration of the Brent-Kung algorithm is shown below:
 
-<img src="images/brent_kung_design.png" width=480 height=420>
+<img src="images/brent_kung_design.png">
 
 In the first part, for each iteration of the algorithm, threads with $id = 2^{i + 1} * n - 1$ will add to its value the value of the thread that is $2^i$ positions before, where $n$ is a positive integer and i is the iteration number (starting from 0).
 
 After the first part of the algorithm, the intermediate results are:
 
 <p align=center>
-    <img src="images/res_part1_brent_kung.png" width=480 height=60>
+    <img src="images/res_part1_brent_kung.png">
 </p>
 
 For the second part of the algorithm, a reverse tree is used to distribute the partial sums to the threads.
@@ -254,7 +254,7 @@ Consequently, the amount of resources consumed by the Brent–Kung kernel is act
 
 We can design a parallel scan algorithm that achieves a higher work efficiency than does the Brent–Kung algorithm by adding a phase of fully independent scans on the subsections of the input.
 
-<img src="images/three_phase_parallel_scan.png" width=480 height=360>
+<img src="images/three_phase_parallel_scan.png">
 
 At the beginning the algorithm partitions the input array into subsections of size $array\_size / blockDim.x$. Then the elements are loaded to the shared memory by using the *corner turning* tenchnique ([as shown in the 5th chapter](../chapter05/README.md#51-global-memory-bandwidth)) and its thread performs a scan operation to its elements. At the end of phase one the last element of each subsection will contain the sum of all elements in the subsection. 
 
@@ -276,11 +276,13 @@ To illustrate, if we use $64$ threads and $32$ execution units to process $1024$
 
 The algorithm that was presented before cannot process arbitrary-length inputs because it is limited by the size of the shared memory. Furthermore, it uses only one thread block to process the input array.
 
+<img src="images/hierarchical_scan_arbitrary_len.png">
+
 Using a hierarchical approach, we can extend the kernel to process arrays of arbitrary length. For large datasets, we partition the input array into sections that can be processed by a single thread block and fit into the shared memory. For example, with the current generation of CUDA devices, using the Brent-Kung kernel we can process up to $2048$ elenebts in each section by using $1024$ threads per block. With up to $65536$ thread blocks in the x dimension of the grid we can process up to $65536 * 2048 = 134,217,728$ elements.
 
 An example of the hierarchical approach is shown in the figure below.
 
-<img src="images/hierarchical_scan_example.png" width=480 height=360>
+<img src="images/hierarchical_scan_example.png">
 
 The operation is divided into three stages.
 

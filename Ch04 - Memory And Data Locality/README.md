@@ -48,7 +48,7 @@ In order to achieve higher performance for a kernel, we need to reduce the numbe
 
 When performing a matrix multiplication, each element of the output matrix P is an inner product of a row of M and a column of N. As shown below, P<sub>Row,Col</sub> (the small square in P) is the inner product of the vector formed from the Row<sup>th</sup> row of M (shown as a horizontal strip in M) and the vector formed from the Col<sup>th</sup> column of N (shown as a vertical strip in N)
 
-<img src="images/matrix_mult_illustration.png" width=480 height=400>
+<img src="images/matrix_mult_illustration.png">
 
 In our initial matrix multiplication implementation, we map threads to elements of P with the same approach that we used for *colorToGreyscaleConversion*; i.e., each thread is responsible for calculating one P element. The row and column indexes for the P element to be calculated by each thread are as follows:
 
@@ -107,7 +107,7 @@ This ratio will likely result in less than 2% utilization of the peak execution 
 
 A CUDA device contains several types of memory that can help programmers improve compute-to-global-memory-access ratio and thus achieve high execution speed. Below are the types of CUDA device memories.
 
-<img src="images/CUDA_device_mem_types.png" width=640 height=320>
+<img src="images/CUDA_device_mem_types.png">
 
 Global memory and constant memory appear at the bottom of the picture. These types of memory can be written (W) and read (R) by the host by calling API functions. The global memory can be written and read by the device. The constant memory supports short-latency, high-bandwidth read-only access by the device.
 
@@ -131,7 +131,7 @@ Thus, placing the operands in registers can improve execution speed.
 
 Below a SM is illustrated showing the shared memory and registers in a CUDA device.
 
-<img src="images/SM_shared_registers.png" width=480 height=320>
+<img src="images/SM_shared_registers.png">
 
 Shared memory is designed as part of the memory space that resides on the processor chip. When the processor accesses data that reside in the shared memory, it needs to perform a memory load operation, similar to accessing data in the global memory. However, because shared memory resides on-chip, it can be accessed with much lower latency and much higher throughput than the global memory. Shared memory has longer latency and lower bandwidth than registers because of the need to perform a load operation.
 
@@ -139,7 +139,7 @@ Shared memory is accessible by all threads in a thread block, whereas register d
 
 The table below shows the memory types of a CUDA device.
 
-<img src="images/CUDA_memory_types.png" width=800 height=240>
+<img src="images/CUDA_memory_types.png">
 
 ---
 
@@ -152,11 +152,11 @@ A common strategy is to partition the data into subsets called tiles so that eac
 
 The concept of tiling can be illustrated using the matrix multiplication example as shown below.
 
-<img src="images/mat_mul_example.png" width=480 height=480>
+<img src="images/mat_mul_example.png">
 
 The picture below showcases the access order in global memory by the threads in time.
 
-<img src="images/global_mem_access.png" width=720 height=240>
+<img src="images/global_mem_access.png">
 
 Each thread accesses four elements of M and four elements of N during execution. Among the four threads highlighted, a significant overlap occurs in the M and N elements they access. For instance, both thread<sub>0,0</sub> and thread<sub>0,1</sub> access M<sub>0,0</sub> and the rest of row 0 of M. Similarly, both thread<sub>0,1</sub> and thread<sub>1,1</sub> access N<sub>0,1</sub> and the rest of column 1 of N.
 
@@ -164,7 +164,7 @@ If thread<sub>0,0</sub> and thread<sub>0,1</sub> can be made to collaborate so t
 
 When the rate of DRAM requests exceeds the provisioned access bandwidth of the DRAM system, traffic congestion arises and the arithmetic units become idle. If multiple threads access data from the same DRAM location, they can potentially form a “carpool” and combine their accesses into one DRAM request. However, this process requires a similar execution schedule for the threads so that their data accesses can be combined.
 
-<img src="images/access_timing.png" width=720 height=360>
+<img src="images/access_timing.png">
 
 ---
 
@@ -172,13 +172,13 @@ In the context of parallel computing, tiling is a program transformation techniq
 
 We now present a tiled matrix multiplication algorithm. The basic idea is for the threads to collaboratively load subsets of the M and N elements into the shared memory before they individually use these elements in their dot product calculation. The size of the shared memory is quite small, and the capacity of the shared memory should not be exceeded when these M and N elements are loaded into the shared memory. This condition can be satisfied by dividing the M and N matrices into smaller tiles so that they can fit into the shared memory. In the simplest form, the tile dimensions equal those of the block, as illustrated below.
 
-<img src="images/mat_mul_tiling.png" width=400 height=400>
+<img src="images/mat_mul_tiling.png">
 
 <br>
 
 The execution phases are:
 
-<img src="images/execution_phases.png" width=720 height=360>
+<img src="images/execution_phases.png">
 
 We can see that in the first phase the four threads will load the M and N elements that are needed to partially accumulate the value of the dot product. When all phases are completed the *PValue* will eventually hold the dot product of the two matrices.
 
@@ -230,7 +230,7 @@ The *threadIdx* and *blockIdx* values are saved into automatic variables and thu
 
 The code assumes that each thread is responsible for calculating one P element. The horizontal (x) position, or the column index of the P element to be produced by a thread, can be calculated as *bx\*TILE_WIDTH+tx* because each block covers *TILE_WIDTH* elements in the horizontal dimension. A thread in block *bx* would have *bx* blocks of threads, or (*bx\*TILE_WIDTH*) threads, before it; they cover *bx\*TILE_WIDTH* elements of P. Another *tx* threads within the same block would cover another *tx* elements. Thus, the thread with *bx* and *tx* should be responsible for calculating the P element whose x index is *bx\*TILE_WIDTH+tx*. Similarly, the horizontal index is saved in the variable Col for the thread.
 
-<img src="images/mat_indeces_calc.png" width=560 height=480>
+<img src="images/mat_indeces_calc.png">
 
 We initialize the *Pvalue* variable to 0.0 and iterate through the phases of the calculation. As noted before the number of phases is equal to *MATRIX_WIDTH / TILE_WIDTH*.
 
@@ -258,7 +258,7 @@ While the performance improvement of the tiled matrix multiplication kernel is i
 
 With the previous kernel code, matrices with arbitary sizes cannot be handled. Assuming that we have two 3x3 M and N matrices and *TILE_WIDTH = 2*, the kernel would try to access elements either outside of the matrix (as shown for the M matrix) or the wrong index will be calculated for the linearized memory (as shown for the N matrix).
 
-<img src="images/accesing_non_existend_elems.png" width=640 height=360>
+<img src="images/accesing_non_existend_elems.png">
 
 Note that these problematic accesses cannot be prevented by excluding the threads that do not calculate valid P elements. Those threads are still needed to cooperative load the M and N elements for the calculation.
 
