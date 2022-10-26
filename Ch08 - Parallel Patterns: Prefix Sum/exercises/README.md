@@ -61,6 +61,10 @@ See [here](../labs/scan/scan.cu).
 
 *6. Analyze the [hierarchical parallel scan](../README.md#86-hierarchical-parallel-scan-for-arbitrary-length-inputs) algorithm and show that it is work-efficient and the total number of additions is no more than $4 * N − 3$.*
 
+```
+
+```
+
 ---
 
 *7. Consider the following array: [4 6 7 1 2 8 5 2]. Perform a parallel inclusive prefix scan on the array by using the Kogge-Stone algorithm. Report the intermediate states of the array after each step.*

@@ -221,7 +221,6 @@ void hierarchical_scan(float *X, float *Y, int n){
     // Perform scan operation on the intermediate results
     if(blocks > 2 * SECTION_SIZE) { // Handle up to max grid x-dimension blocks
         hierarchical_scan(d_S, d_S, blocks);
-        
     }
 
     Brent_Kung_inclusive_scan<<<1, blocks>>>(d_S, d_S, blocks, NULL);
