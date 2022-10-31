@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 
-#define DEBUG
+//#define DEBUG
 
 #define SIZE 1024
 
@@ -56,9 +56,9 @@ int main(int argc, char* argv[]){
         h_X[i] = rand() / (float)RAND_MAX;
 
 #ifdef DEBUG
-    // for(unsigned int i = 0; i < n; i++)
-    //     printf("%f ", h_X[i]);
-    // printf("\n");
+    for(unsigned int i = 0; i < n; i++)
+        printf("%f ", h_X[i]);
+    printf("\n");
 #endif
 
     // Copy host memory to device memory

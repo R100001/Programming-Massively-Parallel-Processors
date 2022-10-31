@@ -53,6 +53,7 @@ int main(int argc, char *argv[]) {
     hostBins = (unsigned int *)malloc(NUM_BINS * sizeof(unsigned int));
 
     // Initialize input
+    srand(time(NULL));
     for (int i = 0; i < inputLength; i++) {
         hostInput[i] = rand() % NUM_BINS;
     }
@@ -79,7 +80,6 @@ int main(int argc, char *argv[]) {
     dim3 blockDim(256), gridDim(64);
     histogram_kernel<<<gridDim, blockDim, NUM_BINS * sizeof(unsigned int)>>>(
         deviceInput, deviceBins, inputLength, NUM_BINS);
-    printf("CUDA error: %s\n", cudaGetErrorString(cudaGetLastError()));
 
     // Copy bins to host
     cudaMemcpy(hostBins, deviceBins, NUM_BINS * sizeof(unsigned int), cudaMemcpyDeviceToHost);
