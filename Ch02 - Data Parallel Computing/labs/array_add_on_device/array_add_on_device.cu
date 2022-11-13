@@ -49,20 +49,30 @@ __global__ void add_v2(int *a, int *b, int *c, int N, int M)
     }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-    int N = 2 * 1024;
-    int M = 2 * 1024;
+
+    int m, n, t_y, t_x;
     int *a, *b, *c;
-    dim3 threads(32, 32);
-    dim3 blocks(N / threads.x, M / threads.y);
 
-    cudaMallocManaged(&a, N * M * sizeof(int));
-    cudaMallocManaged(&b, N * M * sizeof(int));
-    cudaMallocManaged(&c, N * M * sizeof(int));
+    if(argc != 5){
+        printf("Usage: %s <m> <n> <t_y> <t_x>\n", argv[0]);
+        return 1;
+    }
 
-    add_v1<<<blocks, threads>>>(a, b, c, N, M);
-    add_v2<<<blocks, threads>>>(a, b, c, N, M);
+    m = atoi(argv[1]);
+    n = atoi(argv[2]);
+    t_y = atoi(argv[3]);
+    t_x = atoi(argv[4]);
+
+    cudaMallocManaged(&a, m * n * sizeof(int));
+    cudaMallocManaged(&b, m * n * sizeof(int));
+    cudaMallocManaged(&c, m * n * sizeof(int));
+
+    dim3 threads(t_x, t_y);
+    dim3 blocks(n / threads.x, m / threads.y);
+    add_v1<<<blocks, threads>>>(a, b, c, n, m);
+    add_v2<<<blocks, threads>>>(a, b, c, n, m);
 
     cudaFree(a);
     cudaFree(b);
