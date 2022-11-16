@@ -1,9 +1,16 @@
+
+#export PATH="/usr/local/cuda/bin:$PATH"
+
 n_devices=$(nvidia-smi -L | wc -l)
 echo "Number of devices: $n_devices"
+
 for device in $(seq 0 $((n_devices-1)));
 do
     echo $device
     export CUDA_VISIBLE_DEVICES=$device
+
+    nvcc -o ../device_capabilities ../device_capabilities.cu
+
     outfile=$(../device_capabilities)
     touch "$outfile"
 
