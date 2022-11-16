@@ -4,6 +4,7 @@ GPU: NVIDIA GeForce RTX 3060 360.05
 
 
 array_add_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000022  0.000039  0.000028
 100   0.000005  0.000009  0.000007
@@ -12,6 +13,7 @@ array_add_coalesced
 5000  0.000899  0.000912  0.000906
 10000 0.003570  0.003581  0.003575
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   13.021    23.438    17.107
@@ -20,6 +22,7 @@ array_add_coalesced
 5000  329.086   333.618   331.174
 10000 335.112   336.127   335.695
 
+Bandwidth utilization (percentage) (max = 360.05):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.036     0.065     0.048
@@ -33,6 +36,7 @@ array_add_coalesced
 
 
 array_add_interleaved_partitioning
+Time (in seconds):
       Min       Max       Avg
 1     0.000023  0.000033  0.000028
 100   0.000006  0.000009  0.000007
@@ -41,6 +45,7 @@ array_add_interleaved_partitioning
 5000  0.000912  0.000927  0.000919
 10000 0.003637  0.003659  0.003646
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   13.021    19.531    16.220
@@ -49,6 +54,7 @@ array_add_interleaved_partitioning
 5000  323.700   328.970   326.387
 10000 327.984   329.960   329.093
 
+Bandwidth utilization (percentage) (max = 360.05):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.036     0.054     0.045
@@ -62,6 +68,7 @@ array_add_interleaved_partitioning
 
 
 array_add_not_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000023  0.000048  0.000028
 100   0.000005  0.000009  0.000007
@@ -70,6 +77,7 @@ array_add_not_coalesced
 5000  0.001672  0.001691  0.001681
 10000 0.006790  0.006818  0.006803
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   13.021    23.438    15.903
@@ -78,6 +86,7 @@ array_add_not_coalesced
 5000  177.412   179.378   178.449
 10000 176.013   176.743   176.406
 
+Bandwidth utilization (percentage) (max = 360.05):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.036     0.065     0.044
@@ -96,6 +105,7 @@ GPU: NVIDIA GeForce RTX 2060 336.05
 
 
 array_add_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000021  0.000034  0.000027
 100   0.000006  0.000014  0.000010
@@ -104,6 +114,7 @@ array_add_coalesced
 5000  0.001491  0.001565  0.001507
 10000 0.005966  0.006040  0.006008
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   8.427     18.939    12.096
@@ -112,6 +123,7 @@ array_add_coalesced
 5000  191.722   201.258   199.125
 10000 198.682   201.126   199.743
 
+Bandwidth utilization (percentage) (max = 336.05):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.025     0.056     0.036
@@ -125,6 +137,7 @@ array_add_coalesced
 
 
 array_add_interleaved_partitioning
+Time (in seconds):
       Min       Max       Avg
 1     0.000021  0.000035  0.000027
 100   0.000007  0.000014  0.000010
@@ -133,6 +146,7 @@ array_add_interleaved_partitioning
 5000  0.001713  0.001806  0.001740
 10000 0.006956  0.007089  0.007019
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   8.371     17.773    12.383
@@ -141,6 +155,7 @@ array_add_interleaved_partitioning
 5000  166.073   175.093   172.487
 10000 169.267   172.521   170.974
 
+Bandwidth utilization (percentage) (max = 336.05):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.025     0.053     0.037
@@ -154,6 +169,7 @@ array_add_interleaved_partitioning
 
 
 array_add_not_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000022  0.000033  0.000027
 100   0.000006  0.000014  0.000010
@@ -162,6 +178,7 @@ array_add_not_coalesced
 5000  0.002727  0.002804  0.002745
 10000 0.011479  0.011563  0.011526
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   8.446     19.430    11.966
@@ -170,6 +187,7 @@ array_add_not_coalesced
 5000  106.999   109.991   109.291
 10000 103.776   104.537   104.111
 
+Bandwidth utilization (percentage) (max = 336.05):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.025     0.058     0.036
@@ -188,6 +206,7 @@ GPU: NVIDIA GeForce RTX 3070 Ti 608.06
 
 
 array_add_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000023  0.000045  0.000028
 100   0.000005  0.000009  0.000007
@@ -196,6 +215,7 @@ array_add_coalesced
 5000  0.000544  0.000618  0.000559
 10000 0.002150  0.002226  0.002193
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   13.021    23.438    16.625
@@ -204,6 +224,7 @@ array_add_coalesced
 5000  485.625   551.503   537.114
 10000 538.979   558.069   547.350
 
+Bandwidth utilization (percentage) (max = 608.06):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.021     0.039     0.027
@@ -217,6 +238,7 @@ array_add_coalesced
 
 
 array_add_interleaved_partitioning
+Time (in seconds):
       Min       Max       Avg
 1     0.000022  0.000033  0.000028
 100   0.000005  0.000009  0.000007
@@ -225,6 +247,7 @@ array_add_interleaved_partitioning
 5000  0.000556  0.000630  0.000574
 10000 0.002242  0.002327  0.002289
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   13.021    23.438    16.578
@@ -233,6 +256,7 @@ array_add_interleaved_partitioning
 5000  475.816   539.755   523.330
 10000 515.762   535.263   524.428
 
+Bandwidth utilization (percentage) (max = 608.06):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.021     0.039     0.027
@@ -246,6 +270,7 @@ array_add_interleaved_partitioning
 
 
 array_add_not_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000020  0.000050  0.000028
 100   0.000005  0.000009  0.000007
@@ -254,6 +279,7 @@ array_add_not_coalesced
 5000  0.001016  0.001094  0.001034
 10000 0.003915  0.003994  0.003958
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   13.021    23.438    17.214
@@ -262,6 +288,7 @@ array_add_not_coalesced
 5000  274.307   295.155   290.268
 10000 300.430   306.528   303.168
 
+Bandwidth utilization (percentage) (max = 608.06):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.021     0.039     0.028
@@ -280,6 +307,7 @@ GPU: NVIDIA GeForce RTX 3060 Ti 448.06
 
 
 array_add_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000023  0.000033  0.000028
 100   0.000005  0.000009  0.000007
@@ -288,6 +316,7 @@ array_add_coalesced
 5000  0.000732  0.000801  0.000745
 10000 0.002897  0.002970  0.002937
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   13.021    23.438    16.381
@@ -296,6 +325,7 @@ array_add_coalesced
 5000  374.311   410.051   402.809
 10000 404.060   414.159   408.606
 
+Bandwidth utilization (percentage) (max = 448.06):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.029     0.052     0.037
@@ -309,6 +339,7 @@ array_add_coalesced
 
 
 array_add_interleaved_partitioning
+Time (in seconds):
       Min       Max       Avg
 1     0.000023  0.000048  0.000028
 100   0.000005  0.000009  0.000007
@@ -317,6 +348,7 @@ array_add_interleaved_partitioning
 5000  0.000745  0.000816  0.000762
 10000 0.002964  0.003048  0.003009
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   13.021    23.438    16.298
@@ -325,6 +357,7 @@ array_add_interleaved_partitioning
 5000  367.618   402.481   394.238
 10000 393.655   404.793   398.903
 
+Bandwidth utilization (percentage) (max = 448.06):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.029     0.052     0.036
@@ -338,6 +371,7 @@ array_add_interleaved_partitioning
 
 
 array_add_not_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000023  0.000042  0.000028
 100   0.000005  0.000009  0.000008
@@ -346,6 +380,7 @@ array_add_not_coalesced
 5000  0.001099  0.001170  0.001115
 10000 0.004261  0.004339  0.004305
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   13.021    23.438    15.766
@@ -354,6 +389,7 @@ array_add_not_coalesced
 5000  256.309   272.854   269.057
 10000 276.563   281.656   278.734
 
+Bandwidth utilization (percentage) (max = 448.06):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.029     0.052     0.035
@@ -372,6 +408,7 @@ GPU: NVIDIA GeForce RTX 3060 Laptop GPU 288.05
 
 
 array_add_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000006  0.000147  0.000016
 100   0.000005  0.000048  0.000018
@@ -380,6 +417,7 @@ array_add_coalesced
 5000  0.001270  0.001842  0.001404
 10000 0.005005  0.005817  0.005031
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.002     0.001
 100   2.493     23.438    7.542
@@ -388,6 +426,7 @@ array_add_coalesced
 5000  162.823   236.218   213.922
 10000 206.297   239.744   238.573
 
+Bandwidth utilization (percentage) (max = 288.05):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.009     0.081     0.026
@@ -401,6 +440,7 @@ array_add_coalesced
 
 
 array_add_interleaved_partitioning
+Time (in seconds):
       Min       Max       Avg
 1     0.000005  0.000029  0.000013
 100   0.000012  0.000041  0.000016
@@ -409,6 +449,7 @@ array_add_interleaved_partitioning
 5000  0.001302  0.001619  0.001506
 10000 0.005370  0.005625  0.005499
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.002     0.001
 100   2.930     9.766     7.462
@@ -417,6 +458,7 @@ array_add_interleaved_partitioning
 5000  185.310   230.338   199.570
 10000 213.330   223.475   218.244
 
+Bandwidth utilization (percentage) (max = 288.05):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.010     0.034     0.026
@@ -430,6 +472,7 @@ array_add_interleaved_partitioning
 
 
 array_add_not_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000005  0.000035  0.000013
 100   0.000008  0.000033  0.000017
@@ -438,6 +481,7 @@ array_add_not_coalesced
 5000  0.002010  0.002034  0.002020
 10000 0.007353  0.007567  0.007483
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.002     0.001
 100   3.662     14.648    7.220
@@ -446,6 +490,7 @@ array_add_not_coalesced
 5000  147.491   149.234   148.551
 10000 158.591   163.190   160.359
 
+Bandwidth utilization (percentage) (max = 288.05):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.013     0.051     0.025
@@ -464,6 +509,7 @@ GPU: NVIDIA GeForce GTX 1650 192.03
 
 
 array_add_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000020  0.000033  0.000027
 100   0.000006  0.000016  0.000011
@@ -472,6 +518,7 @@ array_add_coalesced
 5000  0.001812  0.001879  0.001825
 10000 0.007238  0.007309  0.007277
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   7.669     19.531    11.434
@@ -480,6 +527,7 @@ array_add_coalesced
 5000  159.667   165.586   164.387
 10000 164.181   165.782   164.895
 
+Bandwidth utilization (percentage) (max = 192.03):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.040     0.102     0.060
@@ -493,6 +541,7 @@ array_add_coalesced
 
 
 array_add_interleaved_partitioning
+Time (in seconds):
       Min       Max       Avg
 1     0.000022  0.000037  0.000028
 100   0.000007  0.000014  0.000010
@@ -501,6 +550,7 @@ array_add_interleaved_partitioning
 5000  0.001985  0.002085  0.002015
 10000 0.008619  0.009003  0.008818
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   8.371     18.116    11.932
@@ -509,6 +559,7 @@ array_add_interleaved_partitioning
 5000  143.870   151.171   148.916
 10000 133.289   139.220   136.088
 
+Bandwidth utilization (percentage) (max = 192.03):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.044     0.094     0.062
@@ -522,6 +573,7 @@ array_add_interleaved_partitioning
 
 
 array_add_not_coalesced
+Time (in seconds):
       Min       Max       Avg
 1     0.000021  0.000034  0.000027
 100   0.000007  0.000016  0.000011
@@ -530,6 +582,7 @@ array_add_not_coalesced
 5000  0.005318  0.005399  0.005344
 10000 0.018533  0.018613  0.018577
 
+Bandwidth utilization:
       Min       Max       Avg
 1     0.000     0.001     0.000
 100   7.622     17.857    10.984
@@ -538,6 +591,7 @@ array_add_not_coalesced
 5000  55.561    56.411    56.140
 10000 64.471    64.750    64.596
 
+Bandwidth utilization (percentage) (max = 192.03):
       Min       Max       Avg
 1     0.000     0.000     0.000
 100   0.040     0.093     0.057

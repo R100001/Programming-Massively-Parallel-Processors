@@ -90,6 +90,7 @@ def main():
 
                         sizes_max_len = max(map(len, sizes))
 
+                        outputfile.write("Time (in seconds):" + '\n')
                         outputfile.write(' ' * (sizes_max_len + 1) + "Min       Max       Avg" + '\n')
                         
                         for j, s in enumerate(sizes):
@@ -100,6 +101,7 @@ def main():
 
                         outputfile.write('\n')
 
+                        outputfile.write("Bandwidth utilization:" + '\n')
                         outputfile.write(' ' * (sizes_max_len + 1) + "Min       Max       Avg" + '\n')
 
                         for j, s in enumerate(sizes):
@@ -110,6 +112,7 @@ def main():
 
                         outputfile.write('\n')
 
+                        outputfile.write(f"Bandwidth utilization (percentage) (max = {theoretical_bw}):" + '\n')
                         outputfile.write(' ' * (sizes_max_len + 1) + "Min       Max       Avg" + '\n')
 
                         for j, s in enumerate(sizes):
