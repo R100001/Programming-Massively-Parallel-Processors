@@ -1,6 +1,6 @@
 #include <iostream>
 
-// This kernel can handle up to shared_mem_size elements
+// This kernel can handle up to min(shared_mem_size, max threads per block) elements
 template<typename T> __global__
 void Kogge_Stone_inclusive_scan(T *X, T *Y, int n, T *S = NULL){
 
@@ -33,7 +33,7 @@ void Kogge_Stone_inclusive_scan(T *X, T *Y, int n, T *S = NULL){
 //----------------------------------------------------------------------
 
 
-// This kernel can handle up to 2 * shared_mem_size elements
+// This kernel can handle up to min(2 * shared_mem_size, 2 * max threads per block) elements
 template<typename T> __global__
 void Brent_Kung_inclusive_scan(T *X, T *Y, int n, T *S = NULL){
 
@@ -163,7 +163,7 @@ void add_intermediate_results(T *Y, int n, T *S, int size){
 
 }
 
-// This function can handle up to 2 * shared_mem_size * (max grid x-dimension size) elements 
+// This function can handle up to shared_mem_size * (max grid x-dimension size) elements 
 template<typename T>
 void hierarchical_scan(T *X, T *Y, int n, nvbench::launch &launch){
 
@@ -173,7 +173,9 @@ void hierarchical_scan(T *X, T *Y, int n, nvbench::launch &launch){
 
     int shared_mem_size = 4096; // 2^12
 
-    int blocks = (n + shared_mem_size - 1) / shared_mem_size;
+    int elems_per_block = shared_mem_size;
+
+    int blocks = (n + elems_per_block - 1) / elems_per_block;
 
     // Allocate memory on the device for the intermediate results
     cudaMalloc((void **)&d_S, blocks * sizeof(T));
@@ -182,7 +184,7 @@ void hierarchical_scan(T *X, T *Y, int n, nvbench::launch &launch){
     three_phase_parallel_inclusive_scan<T><<<blocks, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
         X, Y, n, shared_mem_size, d_S);
 
-    if(blocks > shared_mem_size) hierarchical_scan<T>(d_S, d_S, blocks, launch);
+    if(blocks > elems_per_block) hierarchical_scan<T>(d_S, d_S, blocks, launch);
 
     if(blocks > 1){
         three_phase_parallel_inclusive_scan<T><<<1, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
@@ -190,7 +192,7 @@ void hierarchical_scan(T *X, T *Y, int n, nvbench::launch &launch){
             
         // Add the intermediate results to the final results
         add_intermediate_results<T><<<blocks - 1, t_x, 0, launch.get_stream()>>>(
-            Y + shared_mem_size, n - shared_mem_size, d_S, shared_mem_size);
+            Y + elems_per_block, n - elems_per_block, d_S, elems_per_block);
     }
 
     // Free memory on the device

@@ -265,118 +265,57 @@ void reduction7_bench(nvbench::state &state, nvbench::type_list<T>)
 }
 
 NVBENCH_BENCH_TYPES(reduction1_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
-    .set_name("Simple Reduction (Different Input, Grid and Block sizes)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 8))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
+    .set_name("Simple Reduction (Different Input sizes)")
+    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 4))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 2))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH_TYPES(reduction2_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
-    .set_name("Reduction - Adjacent Threads (Different Input, Grid and Block sizes)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 8))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
+    .set_name("Reduction - Adjacent Threads (Different Input sizes)")
+    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 4))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 2))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH_TYPES(reduction3_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
-    .set_name("Reduction - Sequential Addressing (Different Input, Grid and Block sizes)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 8))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
+    .set_name("Reduction - Sequential Addressing (Different Input sizes)")
+    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 4))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 2))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH_TYPES(reduction4_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
-    .set_name("Reduction - Two Loads per Thread (Different Input, Grid and Block sizes)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 8))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
+    .set_name("Reduction - Two Loads per Thread (Different Input sizes)")
+    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 4))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 2))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH_TYPES(reduction5_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
-    .set_name("Reduction - Unroll Last Warp (Different Input, Grid and Block sizes)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 8))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
+    .set_name("Reduction - Unroll Last Warp (Different Input sizes)")
+    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 4))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 2))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH_TYPES(reduction6_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
-    .set_name("Reduction - Completely Unrolled (Different Input, Grid and Block sizes)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 8))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
+    .set_name("Reduction - Completely Unrolled (Different Input sizes)")
+    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 4))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 2))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH_TYPES(reduction7_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
-    .set_name("Reduction - Multiple Loads (Different Input, Grid and Block sizes)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 8))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-using cts_types = nvbench::type_list<nvbench::uint8_t,
-                                     nvbench::uint16_t,
-                                     nvbench::uint32_t,
-                                     nvbench::uint64_t>;
-
-NVBENCH_BENCH_TYPES(reduction1_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Simple Reduction (Different Input and Output types)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(26, 26, 1))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 1))
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-NVBENCH_BENCH_TYPES(reduction2_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Reduction - Adjacent Threads (Different Input and Output types)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(26, 26, 1))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 1))
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-NVBENCH_BENCH_TYPES(reduction3_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Reduction - Sequential Addressing (Different Input and Output types)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(26, 26, 1))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 1))
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-NVBENCH_BENCH_TYPES(reduction4_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Reduction - Two Loads per Thread (Different Input and Output types)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(26, 26, 1))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 1))
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-NVBENCH_BENCH_TYPES(reduction5_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Reduction - Unroll Last Warp (Different Input and Output types)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(26, 26, 1))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 1))
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-NVBENCH_BENCH_TYPES(reduction6_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Reduction - Completely Unrolled (Different Input and Output types)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(26, 26, 1))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 1))
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-NVBENCH_BENCH_TYPES(reduction7_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Reduction - Multiple Loads (Different Input and Output types)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(26, 26, 1))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 1))
+    .set_name("Reduction - Multiple Loads (Different Input sizes)")
+    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 4))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 2))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;

@@ -60,7 +60,13 @@ void mat_vec_mul_tiles_bench(nvbench::state &state, nvbench::type_list<T>)
 
     const std::size_t num_elements = rows * cols;
 
-    if (rows * cols > (1 << 26))
+    if (rows != cols)
+    {
+        state.skip("Skipping not equal dims...");
+        return;
+    }
+
+    if (num_elements > (1 << 26))
     {
         state.skip("Trying to allocate too much memory. Skipping...");
         return;
@@ -92,42 +98,28 @@ void mat_vec_mul_tiles_bench(nvbench::state &state, nvbench::type_list<T>)
 }
 
 NVBENCH_BENCH_TYPES(mat_vec_mul_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
-    .set_name("Simple Matrix Vector Multiplication (Different Rows and Columns, Grid and Block sizes)")
+    .set_name("Simple Matrix Vector Multiplication (Different Rows and Columns sizes)")
     .add_int64_power_of_two_axis("Num Rows", nvbench::range(1, 25, 4))
     .add_int64_power_of_two_axis("Num Cols", nvbench::range(1, 25, 4))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 2))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH_TYPES(mat_vec_mul_tiles_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
-    .set_name("Matrix Vector Multiplication with Shared Memory (Different Rows and Columns, Grid and Block sizes)")
+    .set_name("Matrix Vector Multiplication with Shared Memory (Different Rows and Columns sizes)")
     .add_int64_power_of_two_axis("Num Rows", nvbench::range(1, 25, 4))
     .add_int64_power_of_two_axis("Num Cols", nvbench::range(1, 25, 4))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 2))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+NVBENCH_BENCH_TYPES(mat_vec_mul_tiles_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
+    .set_name("Matrix Vector Multiplication with Shared Memory (Different Grid and Block sizes)")
+    .add_int64_power_of_two_axis("Num Rows", nvbench::range(12, 12, 1))
+    .add_int64_power_of_two_axis("Num Cols", nvbench::range(12, 12, 1))
     .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-using cts_types = nvbench::type_list<nvbench::uint8_t,
-                                     nvbench::uint16_t,
-                                     nvbench::uint32_t,
-                                     nvbench::uint64_t>;
-
-NVBENCH_BENCH_TYPES(mat_vec_mul_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Simple Matrix Vector Multiplication (Different Input and Output types)")
-    .add_int64_power_of_two_axis("Num Rows", nvbench::range(13, 13, 1))
-    .add_int64_power_of_two_axis("Num Cols", nvbench::range(13, 13, 1))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(8, 8, 1))
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-NVBENCH_BENCH_TYPES(mat_vec_mul_tiles_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Matrix Vector Multiplication with Shared Memory (Different Input and Output types)")
-    .add_int64_power_of_two_axis("Num Rows", nvbench::range(13, 13, 1))
-    .add_int64_power_of_two_axis("Num Cols", nvbench::range(13, 13, 1))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(8, 8, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;

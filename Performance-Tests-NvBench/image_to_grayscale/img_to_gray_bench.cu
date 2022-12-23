@@ -41,9 +41,9 @@ void img_to_gray_bench(nvbench::state &state)
 }
 
 NVBENCH_BENCH(img_to_gray_bench)
-    .set_name("Image to Grayscale (Different Input, Grid and Block sizes)")
+    .set_name("Image to Grayscale (Different Input sizes)")
     .add_int64_power_of_two_axis("Axis Size", nvbench::range(1, 13, 1))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(1, 5, 1))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(4, 4, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;

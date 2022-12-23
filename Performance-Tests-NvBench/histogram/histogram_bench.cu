@@ -58,19 +58,19 @@ void histogram_shared_bench(nvbench::state &state)
 }
 
 NVBENCH_BENCH(histogram_bench)
-    .set_name("Simple Histogram (Different Input, Grid and Block sizes)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 4))
-    .add_int64_power_of_two_axis("Num Bins", nvbench::range(1, 13, 3))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
+    .set_name("Simple Histogram (Different Array sizes)")
+    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 2))
+    .add_int64_power_of_two_axis("Num Bins", nvbench::range(9, 9, 1))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH(histogram_shared_bench)
-    .set_name("Histogram Shared Bins (Different Input, Grid and Block sizes)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 4))
-    .add_int64_power_of_two_axis("Num Bins", nvbench::range(1, 13, 3))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
+    .set_name("Histogram Shared Bins (Different Grid and Block sizes)")
+    .add_int64_power_of_two_axis("Array Size", nvbench::range(26, 26, 1))
+    .add_int64_power_of_two_axis("Num Bins", nvbench::range(9, 9, 1))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(5, 10, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;

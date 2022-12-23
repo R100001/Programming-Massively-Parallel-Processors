@@ -233,37 +233,107 @@ void convolution_2D_tiled_kernel_bench(nvbench::state &state)
 }
 
 
+//==================================================================================================
+// 1D Convolution Benchmarks:
+
+
+//========================================================================
+// Basic kernel:
+
 NVBENCH_BENCH(convolution_1D_basic_kernel_bench)
-    .set_name("Convolution 1D Basic (Different Array, Mask, Block and Grid Sizes)")
-    .add_int64_power_of_two_axis("Array size", nvbench::range(2, 26, 4))
+    .set_name("Convolution 1D Basic (Different Array Sizes)")
+    .add_int64_power_of_two_axis("Array size", nvbench::range(2, 26, 2))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
+    .add_int64_power_of_two_axis("Block dim", nvbench::range(9, 9, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+NVBENCH_BENCH(convolution_1D_basic_kernel_bench)
+    .set_name("Convolution 1D Basic (Different Mask Sizes)")
+    .add_int64_power_of_two_axis("Array size", nvbench::range(26, 26, 1))
     .add_int64_axis("Mask width", nvbench::range(3, 11, 2))
-    .add_int64_power_of_two_axis("Block dim", nvbench::range(5, 10, 1))
+    .add_int64_power_of_two_axis("Block dim", nvbench::range(9, 9, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+//========================================================================
+// Constant memory kernel:
+
+NVBENCH_BENCH(convolution_1D_constant_memory_kernel_bench)
+    .set_name("Convolution 1D Constant Memory (Different Array Sizes)")
+    .add_int64_power_of_two_axis("Array size", nvbench::range(2, 26, 2))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
+    .add_int64_power_of_two_axis("Block dim", nvbench::range(9, 9, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH(convolution_1D_constant_memory_kernel_bench)
-    .set_name("Convolution 1D Constant Memory (Different Array, Mask, Block and Grid Sizes)")
-    .add_int64_power_of_two_axis("Array size", nvbench::range(2, 26, 4))
+    .set_name("Convolution 1D Constant Memory (Different Mask Sizes)")
+    .add_int64_power_of_two_axis("Array size", nvbench::range(26, 26, 1))
     .add_int64_axis("Mask width", nvbench::range(3, 11, 2))
-    .add_int64_power_of_two_axis("Block dim", nvbench::range(5, 10, 1))
+    .add_int64_power_of_two_axis("Block dim", nvbench::range(9, 9, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+//========================================================================
+// Tiled kernel:
+
+NVBENCH_BENCH(convolution_1D_tiled_kernel_bench)
+    .set_name("Convolution 1D Tiled (Different Array")
+    .add_int64_power_of_two_axis("Array size", nvbench::range(2, 26, 2))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
+    .add_int64_power_of_two_axis("Block dim", nvbench::range(9, 9, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH(convolution_1D_tiled_kernel_bench)
-    .set_name("Convolution 1D Tiled (Different Array, Mask, Block and Grid Sizes)")
-    .add_int64_power_of_two_axis("Array size", nvbench::range(2, 26, 4))
+    .set_name("Convolution 1D Tiled (Different Mask Sizes)")
+    .add_int64_power_of_two_axis("Array size", nvbench::range(26, 26, 1))
     .add_int64_axis("Mask width", nvbench::range(3, 11, 2))
+    .add_int64_power_of_two_axis("Block dim", nvbench::range(9, 9, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+NVBENCH_BENCH(convolution_1D_tiled_kernel_bench)
+    .set_name("Convolution 1D Tiled (Different Block and Grid Sizes)")
+    .add_int64_power_of_two_axis("Array size", nvbench::range(26, 26, 1))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
     .add_int64_power_of_two_axis("Block dim", nvbench::range(5, 10, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
+//========================================================================
+// Tiled and caching kernel:
+
 NVBENCH_BENCH(convolution_1D_tiled_caching_kernel_bench)
-    .set_name("Convolution 1D Tiled and Caching (Different Array, Mask, Block and Grid Sizes)")
-    .add_int64_power_of_two_axis("Array size", nvbench::range(2, 26, 4))
+    .set_name("Convolution 1D Tiled and Caching (Different Array Sizes)")
+    .add_int64_power_of_two_axis("Array size", nvbench::range(2, 26, 2))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
+    .add_int64_power_of_two_axis("Block dim", nvbench::range(9, 9, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+NVBENCH_BENCH(convolution_1D_tiled_caching_kernel_bench)
+    .set_name("Convolution 1D Tiled and Caching (Different Mask Sizes)")
+    .add_int64_power_of_two_axis("Array size", nvbench::range(26, 26, 1))
     .add_int64_axis("Mask width", nvbench::range(3, 11, 2))
+    .add_int64_power_of_two_axis("Block dim", nvbench::range(9, 9, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+NVBENCH_BENCH(convolution_1D_tiled_caching_kernel_bench)
+    .set_name("Convolution 1D Tiled and Caching (Different Block and Grid Sizes)")
+    .add_int64_power_of_two_axis("Array size", nvbench::range(26, 26, 1))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
     .add_int64_power_of_two_axis("Block dim", nvbench::range(5, 10, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
@@ -272,31 +342,111 @@ NVBENCH_BENCH(convolution_1D_tiled_caching_kernel_bench)
 //==================================================================================================
 // 2D Convolution Benchmarks:
 
+
+//========================================================================
+// Basic kernel:
+
 NVBENCH_BENCH(convolution_2D_basic_kernel_bench)
-    .set_name("Convolution 2D Basic (Different Array, Mask, Block and Grid Sizes)")
-    .add_int64_power_of_two_axis("Axis size", nvbench::range(1, 13, 4))
-    .add_int64_axis("Num channels", nvbench::range(1, 5, 1))
+    .set_name("Convolution 2D Basic (Different Array Sizes)")
+    .add_int64_power_of_two_axis("Axis size", nvbench::range(1, 13, 1))
+    .add_int64_axis("Num channels", nvbench::range(1, 1, 1))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
+    .add_int64_power_of_two_axis("Block axis dim", nvbench::range(4, 4, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+NVBENCH_BENCH(convolution_2D_basic_kernel_bench)
+    .set_name("Convolution 2D Basic (Different Mask Sizes)")
+    .add_int64_power_of_two_axis("Axis size", nvbench::range(13, 13, 1))
+    .add_int64_axis("Num channels", nvbench::range(1, 1, 1))
     .add_int64_axis("Mask width", nvbench::range(3, 11, 2))
-    .add_int64_power_of_two_axis("Block axis dim", nvbench::range(1, 5, 1))
+    .add_int64_power_of_two_axis("Block axis dim", nvbench::range(4, 4, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+NVBENCH_BENCH(convolution_2D_basic_kernel_bench)
+    .set_name("Convolution 2D Basic (Different Num Channels Sizes)")
+    .add_int64_power_of_two_axis("Axis size", nvbench::range(12, 12, 1))
+    .add_int64_axis("Num channels", nvbench::range(1, 5, 1))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
+    .add_int64_power_of_two_axis("Block axis dim", nvbench::range(4, 4, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+//========================================================================
+// Constant memory kernel:
+
+NVBENCH_BENCH(convolution_2D_constant_memory_kernel_bench)
+    .set_name("Convolution 2D Constant Memory (Different Array Sizes)")
+    .add_int64_power_of_two_axis("Axis size", nvbench::range(1, 13, 1))
+    .add_int64_axis("Num channels", nvbench::range(1, 1, 1))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
+    .add_int64_power_of_two_axis("Block axis dim", nvbench::range(4, 4, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH(convolution_2D_constant_memory_kernel_bench)
-    .set_name("Convolution 2D Constant Memory (Different Array, Mask, Block and Grid Sizes)")
-    .add_int64_power_of_two_axis("Axis size", nvbench::range(1, 13, 4))
-    .add_int64_axis("Num channels", nvbench::range(1, 5, 1))
+    .set_name("Convolution 2D Constant Memory (Different Mask Sizes)")
+    .add_int64_power_of_two_axis("Axis size", nvbench::range(13, 13, 1))
+    .add_int64_axis("Num channels", nvbench::range(1, 1, 1))
     .add_int64_axis("Mask width", nvbench::range(3, 11, 2))
-    .add_int64_power_of_two_axis("Block axis dim", nvbench::range(1, 5, 1))
+    .add_int64_power_of_two_axis("Block axis dim", nvbench::range(4, 4, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+NVBENCH_BENCH(convolution_2D_constant_memory_kernel_bench)
+    .set_name("Convolution 2D Constant Memory (Different Num Channels Sizes)")
+    .add_int64_power_of_two_axis("Axis size", nvbench::range(12, 12, 1))
+    .add_int64_axis("Num channels", nvbench::range(1, 5, 1))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
+    .add_int64_power_of_two_axis("Block axis dim", nvbench::range(4, 4, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+//========================================================================
+// Tiled kernel:
+
+NVBENCH_BENCH(convolution_2D_tiled_kernel_bench)
+    .set_name("Convolution 2D Tiled (Different Array Sizes)")
+    .add_int64_power_of_two_axis("Axis size", nvbench::range(1, 13, 1))
+    .add_int64_axis("Num channels", nvbench::range(1, 1, 1))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
+    .add_int64_power_of_two_axis("Block axis dim", nvbench::range(4, 4, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH(convolution_2D_tiled_kernel_bench)
-    .set_name("Convolution 2D Tiled (Different Array, Mask, Block and Grid Sizes)")
-    .add_int64_power_of_two_axis("Axis size", nvbench::range(1, 13, 4))
-    .add_int64_axis("Num channels", nvbench::range(1, 5, 1))
+    .set_name("Convolution 2D Tiled (Different Mask Sizes)")
+    .add_int64_power_of_two_axis("Axis size", nvbench::range(13, 13, 1))
+    .add_int64_axis("Num channels", nvbench::range(1, 1, 1))
     .add_int64_axis("Mask width", nvbench::range(3, 11, 2))
+    .add_int64_power_of_two_axis("Block axis dim", nvbench::range(4, 4, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+NVBENCH_BENCH(convolution_2D_tiled_kernel_bench)
+    .set_name("Convolution 2D Tiled (Different Num Channels Sizes)")
+    .add_int64_power_of_two_axis("Axis size", nvbench::range(12, 12, 1))
+    .add_int64_axis("Num channels", nvbench::range(1, 5, 1))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
+    .add_int64_power_of_two_axis("Block axis dim", nvbench::range(4, 4, 1))
+    .set_max_noise(0.2)
+    .set_timeout(300)
+    ;
+
+NVBENCH_BENCH(convolution_2D_tiled_kernel_bench)
+    .set_name("Convolution 2D Tiled (Different Block and Grid Sizes)")
+    .add_int64_power_of_two_axis("Axis size", nvbench::range(13, 13, 1))
+    .add_int64_axis("Num channels", nvbench::range(1, 1, 1))
+    .add_int64_axis("Mask width", nvbench::range(5, 5, 1))
     .add_int64_power_of_two_axis("Block axis dim", nvbench::range(1, 5, 1))
     .set_max_noise(0.2)
     .set_timeout(300)

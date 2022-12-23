@@ -101,39 +101,7 @@ void hierarchical_scan_bench(nvbench::state &state, nvbench::type_list<T>)
 
 NVBENCH_BENCH_TYPES(hierarchical_scan_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
     .set_name("Hierarchical Scan (Different Input Sizes)")
-    .add_int64_power_of_two_axis("Num Elements", nvbench::range(2, 26, 4))
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-using cts_types = nvbench::type_list<nvbench::uint8_t,
-                                     nvbench::uint16_t,
-                                     nvbench::uint32_t,
-                                     nvbench::uint64_t,
-                                     nvbench::float32_t,
-                                     nvbench::float64_t>;
-
-NVBENCH_BENCH_TYPES(Kogge_Stone_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Kogge-Stone Scan (Different Input and Output types)")
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-NVBENCH_BENCH_TYPES(Brent_Kung_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Brent-Kung Scan (Different Input and Output types)")
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-NVBENCH_BENCH_TYPES(three_phase_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Three-Phase Scan (Different Input and Output types)")
-    .set_max_noise(0.2)
-    .set_timeout(300)
-    ;
-
-NVBENCH_BENCH_TYPES(hierarchical_scan_bench, NVBENCH_TYPE_AXES(cts_types))
-    .set_name("Hierarchical Scan (Different Input Sizes")
-    .add_int64_power_of_two_axis("Num Elements", nvbench::range(26, 26, 4))
+    .add_int64_power_of_two_axis("Num Elements", nvbench::range(2, 26, 2))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;

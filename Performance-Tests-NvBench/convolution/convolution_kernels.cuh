@@ -20,29 +20,6 @@ void convolution_1D_basic_kernel(float *N, float *M, float *P, int mask_width, i
 }
 
 __global__
-void convolution_2D_basic_kernel(float *N, float *M, float *P,
-                                 int mask_height, int mask_width,
-                                 int height, int width, int channels) {
-
-    int i = blockIdx.y * blockDim.y + threadIdx.y;
-    int j = blockIdx.x * blockDim.x + threadIdx.x;
-
-    if(i >= height || j >= width) return;
-
-    int ni_start_point = i - (mask_height / 2);
-    int nj_start_point = j - (mask_width / 2);
-    for(int c = 0; c < channels; ++c){
-        float Pvalue = 0;
-        for(int k = 0; k < mask_height; ++k)
-            for(int l = 0; l < mask_width; ++l)
-                if (ni_start_point + k >= 0 && ni_start_point + k < height &&
-                    nj_start_point + l >= 0 && nj_start_point + l < width)
-                    Pvalue += N[((ni_start_point + k) * width + nj_start_point + l) * channels + c] * M[k * mask_width + l];
-        P[(i * width + j) * channels + c] = clamp(Pvalue);
-    }
-}
-
-__global__
 void convolution_1D_constant_memory_kernel(float *N, float *P, int mask_width, int width) {
 
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -54,29 +31,6 @@ void convolution_1D_constant_memory_kernel(float *N, float *P, int mask_width, i
             Pvalue += N[n_start_point + j] * M[j];
 
     P[i] = clamp(Pvalue);
-}
-
-__global__
-void convolution_2D_constant_memory_kernel(float *N, float *P,
-                                           int mask_height, int mask_width,
-                                           int height, int width, int channels) {
-
-    int i = blockIdx.y * blockDim.y + threadIdx.y;
-    int j = blockIdx.x * blockDim.x + threadIdx.x;
-
-    if(i >= height || j >= width) return;
-
-    int ni_start_point = i - (mask_height / 2);
-    int nj_start_point = j - (mask_width / 2);
-    for(int c = 0; c < channels; ++c){
-        float Pvalue = 0;
-        for(int k = 0; k < mask_height; ++k)
-            for(int l = 0; l < mask_width; ++l)
-                if (ni_start_point + k >= 0 && ni_start_point + k < height &&
-                    nj_start_point + l >= 0 && nj_start_point + l < width)
-                    Pvalue += N[((ni_start_point + k) * width + nj_start_point + l) * channels + c] * M[k * mask_width + l];
-        P[(i * width + j) * channels + c] = clamp(Pvalue);
-    }
 }
 
 __global__
@@ -105,6 +59,82 @@ void convolution_1D_tiled_kernel(float *N, float *P, int mask_width, int width) 
         Pvalue += N_ds[threadIdx.x + j] * M[j];
 
     P[i] = clamp(Pvalue);
+}
+
+__global__
+void convolution_1D_tiled_caching_kernel(float *N, float *P, int mask_width, int width) {
+
+    extern __shared__ float N_ds[];
+
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+
+    N_ds[threadIdx.x] = N[i];
+    __syncthreads();
+
+    int this_tile_start_point =  blockIdx.x      * blockDim.x;
+    int next_tile_start_point = (blockIdx.x + 1) * blockDim.x;
+    int n_start_point = i - (mask_width / 2);
+    float Pvalue = 0;
+    for (int j = 0; j < mask_width; j++) {
+
+        int n_index = n_start_point + j;
+        if (n_index >= 0 && n_index < width) {
+            if ((n_index >= this_tile_start_point) && (n_index < next_tile_start_point))
+                Pvalue += N_ds[threadIdx.x + j - (mask_width / 2)] * M[j];
+            else
+                Pvalue += N[n_index] * M[j];
+        }
+    }
+
+    P[i] = clamp(Pvalue);
+}
+
+
+
+__global__
+void convolution_2D_basic_kernel(float *N, float *M, float *P,
+                                 int mask_height, int mask_width,
+                                 int height, int width, int channels) {
+
+    int i = blockIdx.y * blockDim.y + threadIdx.y;
+    int j = blockIdx.x * blockDim.x + threadIdx.x;
+
+    if(i >= height || j >= width) return;
+
+    int ni_start_point = i - (mask_height / 2);
+    int nj_start_point = j - (mask_width / 2);
+    for(int c = 0; c < channels; ++c){
+        float Pvalue = 0;
+        for(int k = 0; k < mask_height; ++k)
+            for(int l = 0; l < mask_width; ++l)
+                if (ni_start_point + k >= 0 && ni_start_point + k < height &&
+                    nj_start_point + l >= 0 && nj_start_point + l < width)
+                    Pvalue += N[((ni_start_point + k) * width + nj_start_point + l) * channels + c] * M[k * mask_width + l];
+        P[(i * width + j) * channels + c] = clamp(Pvalue);
+    }
+}
+
+__global__
+void convolution_2D_constant_memory_kernel(float *N, float *P,
+                                           int mask_height, int mask_width,
+                                           int height, int width, int channels) {
+
+    int i = blockIdx.y * blockDim.y + threadIdx.y;
+    int j = blockIdx.x * blockDim.x + threadIdx.x;
+
+    if(i >= height || j >= width) return;
+
+    int ni_start_point = i - (mask_height / 2);
+    int nj_start_point = j - (mask_width / 2);
+    for(int c = 0; c < channels; ++c){
+        float Pvalue = 0;
+        for(int k = 0; k < mask_height; ++k)
+            for(int l = 0; l < mask_width; ++l)
+                if (ni_start_point + k >= 0 && ni_start_point + k < height &&
+                    nj_start_point + l >= 0 && nj_start_point + l < width)
+                    Pvalue += N[((ni_start_point + k) * width + nj_start_point + l) * channels + c] * M[k * mask_width + l];
+        P[(i * width + j) * channels + c] = clamp(Pvalue);
+    }
 }
 
 __global__
@@ -146,32 +176,4 @@ void convolution_2D_tiled_kernel(float *N, float *P,
 
         __syncthreads();
     }
-}
-
-__global__
-void convolution_1D_tiled_caching_kernel(float *N, float *P, int mask_width, int width) {
-
-    extern __shared__ float N_ds[];
-
-    int i = blockIdx.x * blockDim.x + threadIdx.x;
-
-    N_ds[threadIdx.x] = N[i];
-    __syncthreads();
-
-    int this_tile_start_point =  blockIdx.x      * blockDim.x;
-    int next_tile_start_point = (blockIdx.x + 1) * blockDim.x;
-    int n_start_point = i - (mask_width / 2);
-    float Pvalue = 0;
-    for (int j = 0; j < mask_width; j++) {
-
-        int n_index = n_start_point + j;
-        if (n_index >= 0 && n_index < width) {
-            if ((n_index >= this_tile_start_point) && (n_index < next_tile_start_point))
-                Pvalue += N_ds[threadIdx.x + j - (mask_width / 2)] * M[j];
-            else
-                Pvalue += N[n_index] * M[j];
-        }
-    }
-
-    P[i] = clamp(Pvalue);
 }
