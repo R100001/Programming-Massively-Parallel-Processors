@@ -111,8 +111,15 @@ void mat_mat_mul_rec_tiles_bench(nvbench::state &state, nvbench::type_list<T>)
     const std::size_t rows1 = state.get_int64("Num Rows 1");
     const std::size_t cols1rows2 = state.get_int64("Num Cols 1 / Rows 2");
     const std::size_t cols2 = state.get_int64("Num Cols 2");
+    
     const std::size_t block_size = state.get_int64("Num Threads");
     const dim3 grid_dim = dim3((cols2 + (block_size / 2) - 1) / (block_size / 2), (rows1 + block_size - 1) / block_size);
+
+    if(rows1 != cols1rows2 || rows1 != cols2)
+    {
+        state.skip("Matrix dimensions are not equal. Skipping...");
+        return;
+    }
 
     if (rows1 * cols1rows2 + cols1rows2 * cols2  + rows1 * cols2 > (1 << 27))
     {
@@ -148,9 +155,9 @@ void mat_mat_mul_rec_tiles_bench(nvbench::state &state, nvbench::type_list<T>)
 
 NVBENCH_BENCH_TYPES(mat_mat_mul_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
     .set_name("Simple Matrix Matrix Multiplication (Different Rows and Columns sizes)")
-    .add_int64_power_of_two_axis("Num Rows 1", nvbench::range(2, 12, 2))
-    .add_int64_power_of_two_axis("Num Cols 1 / Rows 2", nvbench::range(2, 12, 2))
-    .add_int64_power_of_two_axis("Num Cols 2", nvbench::range(2, 12, 2))
+    .add_int64_power_of_two_axis("Num Rows 1", nvbench::range(1, 25, 2))
+    .add_int64_power_of_two_axis("Num Cols 1 / Rows 2", nvbench::range(1, 25, 2))
+    .add_int64_power_of_two_axis("Num Cols 2", nvbench::range(1, 25, 2))
     .add_int64_power_of_two_axis("Num Threads", nvbench::range(4, 4, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
@@ -158,9 +165,9 @@ NVBENCH_BENCH_TYPES(mat_mat_mul_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbe
 
 NVBENCH_BENCH_TYPES(mat_mat_mul_tiles_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
     .set_name("Matrix Matrix Multiplication with Tiles (Different Rows and Columns sizes)")
-    .add_int64_power_of_two_axis("Num Rows 1", nvbench::range(2, 12, 2))
-    .add_int64_power_of_two_axis("Num Cols 1 / Rows 2", nvbench::range(2, 12, 2))
-    .add_int64_power_of_two_axis("Num Cols 2", nvbench::range(2, 12, 2))
+    .add_int64_power_of_two_axis("Num Rows 1", nvbench::range(1, 25, 2))
+    .add_int64_power_of_two_axis("Num Cols 1 / Rows 2", nvbench::range(1, 25, 2))
+    .add_int64_power_of_two_axis("Num Cols 2", nvbench::range(1, 25, 2))
     .add_int64_power_of_two_axis("Num Threads", nvbench::range(4, 4, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
@@ -178,9 +185,9 @@ NVBENCH_BENCH_TYPES(mat_mat_mul_tiles_bench, NVBENCH_TYPE_AXES(nvbench::type_lis
 
 NVBENCH_BENCH_TYPES(mat_mat_mul_rec_tiles_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
     .set_name("Matrix Matrix Multiplication with Rectangular Tiles (Different Rows and Columns sizes)")
-    .add_int64_power_of_two_axis("Num Rows 1", nvbench::range(1, 25, 4))
-    .add_int64_power_of_two_axis("Num Cols 1 / Rows 2", nvbench::range(1, 25, 4))
-    .add_int64_power_of_two_axis("Num Cols 2", nvbench::range(1, 25, 4))
+    .add_int64_power_of_two_axis("Num Rows 1", nvbench::range(1, 25, 2))
+    .add_int64_power_of_two_axis("Num Cols 1 / Rows 2", nvbench::range(1, 25, 2))
+    .add_int64_power_of_two_axis("Num Cols 2", nvbench::range(1, 25, 2))
     .add_int64_power_of_two_axis("Num Threads", nvbench::range(4, 4, 1))
     .set_max_noise(0.2)
     .set_timeout(300)

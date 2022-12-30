@@ -59,7 +59,7 @@ void histogram_shared_bench(nvbench::state &state)
 
 NVBENCH_BENCH(histogram_bench)
     .set_name("Simple Histogram (Different Array sizes)")
-    .add_int64_power_of_two_axis("Array Size", nvbench::range(2, 26, 2))
+    .add_int64_power_of_two_axis("Array Size", nvbench::range(1, 26, 1))
     .add_int64_power_of_two_axis("Num Bins", nvbench::range(9, 9, 1))
     .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 1))
     .set_max_noise(0.2)

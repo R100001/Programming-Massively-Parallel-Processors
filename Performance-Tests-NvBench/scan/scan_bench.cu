@@ -101,7 +101,7 @@ void hierarchical_scan_bench(nvbench::state &state, nvbench::type_list<T>)
 
 NVBENCH_BENCH_TYPES(hierarchical_scan_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
     .set_name("Hierarchical Scan (Different Input Sizes)")
-    .add_int64_power_of_two_axis("Num Elements", nvbench::range(2, 26, 2))
+    .add_int64_power_of_two_axis("Num Elements", nvbench::range(1, 26, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;

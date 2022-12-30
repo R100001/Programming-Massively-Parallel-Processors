@@ -79,14 +79,14 @@ void coalesced_bench(nvbench::state &state)
 
 NVBENCH_BENCH(not_coalesced_bench)
     .set_name("Not Coalesced (Different Array Sizes)")
-    .add_int64_power_of_two_axis("Axis Size", nvbench::range(1, 13, 2))
+    .add_int64_power_of_two_axis("Axis Size", nvbench::range(1, 13, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
 
 NVBENCH_BENCH(coalesced_bench)
     .set_name("Coalesced (Different Array Sizes)")
-    .add_int64_power_of_two_axis("Axis Size", nvbench::range(1, 13, 2))
+    .add_int64_power_of_two_axis("Axis Size", nvbench::range(1, 13, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;

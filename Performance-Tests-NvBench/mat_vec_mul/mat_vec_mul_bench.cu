@@ -17,6 +17,12 @@ void mat_vec_mul_bench(nvbench::state &state, nvbench::type_list<T>)
 
     const std::size_t num_elements = rows * cols;
 
+    if (rows != cols)
+    {
+        state.skip("Skipping not equal dims...");
+        return;
+    }
+
     if (rows * cols > (1 << 26))
     {
         state.skip("Trying to allocate too much memory. Skipping...");
@@ -99,8 +105,8 @@ void mat_vec_mul_tiles_bench(nvbench::state &state, nvbench::type_list<T>)
 
 NVBENCH_BENCH_TYPES(mat_vec_mul_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
     .set_name("Simple Matrix Vector Multiplication (Different Rows and Columns sizes)")
-    .add_int64_power_of_two_axis("Num Rows", nvbench::range(1, 25, 4))
-    .add_int64_power_of_two_axis("Num Cols", nvbench::range(1, 25, 4))
+    .add_int64_power_of_two_axis("Num Rows", nvbench::range(1, 25, 1))
+    .add_int64_power_of_two_axis("Num Cols", nvbench::range(1, 25, 1))
     .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 2))
     .set_max_noise(0.2)
     .set_timeout(300)
@@ -108,8 +114,8 @@ NVBENCH_BENCH_TYPES(mat_vec_mul_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbe
 
 NVBENCH_BENCH_TYPES(mat_vec_mul_tiles_bench, NVBENCH_TYPE_AXES(nvbench::type_list<nvbench::uint32_t>))
     .set_name("Matrix Vector Multiplication with Shared Memory (Different Rows and Columns sizes)")
-    .add_int64_power_of_two_axis("Num Rows", nvbench::range(1, 25, 4))
-    .add_int64_power_of_two_axis("Num Cols", nvbench::range(1, 25, 4))
+    .add_int64_power_of_two_axis("Num Rows", nvbench::range(1, 25, 1))
+    .add_int64_power_of_two_axis("Num Cols", nvbench::range(1, 25, 1))
     .add_int64_power_of_two_axis("Num Threads", nvbench::range(9, 9, 2))
     .set_max_noise(0.2)
     .set_timeout(300)
@@ -119,7 +125,7 @@ NVBENCH_BENCH_TYPES(mat_vec_mul_tiles_bench, NVBENCH_TYPE_AXES(nvbench::type_lis
     .set_name("Matrix Vector Multiplication with Shared Memory (Different Grid and Block sizes)")
     .add_int64_power_of_two_axis("Num Rows", nvbench::range(12, 12, 1))
     .add_int64_power_of_two_axis("Num Cols", nvbench::range(12, 12, 1))
-    .add_int64_power_of_two_axis("Num Threads", nvbench::range(2, 10, 2))
+    .add_int64_power_of_two_axis("Num Threads", nvbench::range(1, 10, 1))
     .set_max_noise(0.2)
     .set_timeout(300)
     ;
