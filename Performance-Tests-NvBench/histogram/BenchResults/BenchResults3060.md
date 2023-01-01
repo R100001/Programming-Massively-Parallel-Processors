@@ -16,63 +16,102 @@
 # Log
 
 ```
-Run:  [1/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^2 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 0.006544ms GPU, 0.026624ms CPU, 0.50s total GPU, 8.64s total wall, 76401x 
-Pass: Batch: 0.005161ms GPU, 0.50s total GPU, 0.50s total wall, 96881x
-Run:  [2/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^4 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 0.006497ms GPU, 0.025847ms CPU, 0.50s total GPU, 8.69s total wall, 76962x 
-Pass: Batch: 0.005164ms GPU, 0.50s total GPU, 0.50s total wall, 96831x
-Run:  [3/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^6 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 0.006520ms GPU, 0.025945ms CPU, 0.50s total GPU, 8.65s total wall, 76686x 
-Pass: Batch: 0.005162ms GPU, 0.50s total GPU, 0.50s total wall, 96858x
-Run:  [4/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^8 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 0.006910ms GPU, 0.026282ms CPU, 0.50s total GPU, 8.00s total wall, 72361x 
-Pass: Batch: 0.005163ms GPU, 0.50s total GPU, 0.50s total wall, 96838x
-Run:  [5/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^10 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 0.007346ms GPU, 0.026422ms CPU, 0.50s total GPU, 7.35s total wall, 68064x 
-Pass: Batch: 0.005157ms GPU, 0.50s total GPU, 0.50s total wall, 96965x
-Run:  [6/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^12 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 0.009232ms GPU, 0.028601ms CPU, 0.50s total GPU, 5.49s total wall, 54159x 
-Pass: Batch: 0.005153ms GPU, 0.50s total GPU, 0.50s total wall, 97028x
-Run:  [7/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^14 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 0.015647ms GPU, 0.035219ms CPU, 0.50s total GPU, 2.97s total wall, 31955x 
-Pass: Batch: 0.010078ms GPU, 0.50s total GPU, 0.50s total wall, 49613x
-Run:  [8/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^16 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 0.042433ms GPU, 0.063087ms CPU, 0.50s total GPU, 1.26s total wall, 11784x 
-Pass: Batch: 0.036919ms GPU, 0.50s total GPU, 0.50s total wall, 13543x
-Run:  [9/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^18 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 0.149735ms GPU, 0.170600ms CPU, 0.50s total GPU, 0.70s total wall, 3340x 
-Pass: Batch: 0.143742ms GPU, 0.50s total GPU, 0.50s total wall, 3479x
-Run:  [10/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^20 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 0.578139ms GPU, 0.599073ms CPU, 0.50s total GPU, 0.55s total wall, 865x 
-Pass: Batch: 0.572693ms GPU, 0.52s total GPU, 0.52s total wall, 909x
-Run:  [11/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^22 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 2.290660ms GPU, 2.311462ms CPU, 0.50s total GPU, 0.51s total wall, 219x 
-Pass: Batch: 2.288430ms GPU, 0.52s total GPU, 0.52s total wall, 229x
-Run:  [12/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^24 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 9.140168ms GPU, 9.160528ms CPU, 0.50s total GPU, 0.51s total wall, 55x 
-Pass: Batch: 9.135050ms GPU, 0.52s total GPU, 0.52s total wall, 57x
-Run:  [13/19] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 36.534491ms GPU, 36.555548ms CPU, 0.51s total GPU, 0.51s total wall, 14x 
-Pass: Batch: 36.532019ms GPU, 0.55s total GPU, 0.55s total wall, 15x
-Run:  [14/19] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^5]
-Pass: Cold: 22.801036ms GPU, 22.822293ms CPU, 0.50s total GPU, 0.50s total wall, 22x 
-Pass: Batch: 22.798780ms GPU, 0.52s total GPU, 0.52s total wall, 23x
-Run:  [15/19] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^6]
-Pass: Cold: 11.417647ms GPU, 11.437658ms CPU, 0.50s total GPU, 0.51s total wall, 44x 
-Pass: Batch: 11.413081ms GPU, 0.53s total GPU, 0.53s total wall, 46x
-Run:  [16/19] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^7]
-Pass: Cold: 5.740288ms GPU, 5.760418ms CPU, 0.51s total GPU, 0.51s total wall, 88x 
-Pass: Batch: 5.734974ms GPU, 0.52s total GPU, 0.52s total wall, 91x
-Run:  [17/19] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^8]
-Pass: Cold: 2.893700ms GPU, 2.914506ms CPU, 0.50s total GPU, 0.51s total wall, 173x 
-Pass: Batch: 2.888127ms GPU, 0.52s total GPU, 0.52s total wall, 181x
-Run:  [18/19] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^9]
-Pass: Cold: 1.457631ms GPU, 1.477922ms CPU, 0.50s total GPU, 0.52s total wall, 344x 
-Pass: Batch: 1.450705ms GPU, 0.53s total GPU, 0.53s total wall, 362x
-Run:  [19/19] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^10]
-Pass: Cold: 1.525173ms GPU, 1.545628ms CPU, 0.50s total GPU, 0.52s total wall, 328x 
-Pass: Batch: 1.518007ms GPU, 0.52s total GPU, 0.52s total wall, 345x
+Run:  [1/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^1 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.006829ms GPU, 0.026408ms CPU, 0.50s total GPU, 8.12s total wall, 73217x 
+Pass: Batch: 0.005163ms GPU, 0.50s total GPU, 0.50s total wall, 96835x
+Run:  [2/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^2 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.006989ms GPU, 0.026722ms CPU, 0.50s total GPU, 7.88s total wall, 71544x 
+Pass: Batch: 0.005164ms GPU, 0.50s total GPU, 0.50s total wall, 96826x
+Run:  [3/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^3 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.006945ms GPU, 0.026652ms CPU, 0.50s total GPU, 7.96s total wall, 71997x 
+Pass: Batch: 0.005162ms GPU, 0.50s total GPU, 0.50s total wall, 96870x
+Run:  [4/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^4 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.006984ms GPU, 0.026801ms CPU, 0.50s total GPU, 7.91s total wall, 71597x 
+Pass: Batch: 0.005162ms GPU, 0.50s total GPU, 0.50s total wall, 96879x
+Run:  [5/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^5 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.007010ms GPU, 0.026414ms CPU, 0.50s total GPU, 7.85s total wall, 71324x 
+Pass: Batch: 0.005163ms GPU, 0.50s total GPU, 0.50s total wall, 96849x
+Run:  [6/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^6 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.007140ms GPU, 0.026807ms CPU, 0.50s total GPU, 7.68s total wall, 70030x 
+Pass: Batch: 0.005163ms GPU, 0.50s total GPU, 0.50s total wall, 96840x
+Run:  [7/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^7 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.006959ms GPU, 0.026057ms CPU, 0.50s total GPU, 7.90s total wall, 71850x 
+Pass: Batch: 0.005161ms GPU, 0.50s total GPU, 0.50s total wall, 96887x
+Run:  [8/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^8 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.007072ms GPU, 0.026909ms CPU, 0.50s total GPU, 7.77s total wall, 70705x 
+Pass: Batch: 0.005162ms GPU, 0.53s total GPU, 0.53s total wall, 102796x
+Run:  [9/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^9 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.007502ms GPU, 0.027485ms CPU, 0.50s total GPU, 7.20s total wall, 66653x 
+Pass: Batch: 0.005157ms GPU, 0.50s total GPU, 0.50s total wall, 96959x
+Run:  [10/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^10 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.007589ms GPU, 0.027077ms CPU, 0.50s total GPU, 7.05s total wall, 65887x 
+Pass: Batch: 0.005158ms GPU, 0.50s total GPU, 0.50s total wall, 96936x
+Run:  [11/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^11 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.008149ms GPU, 0.027315ms CPU, 0.50s total GPU, 6.40s total wall, 61358x 
+Pass: Batch: 0.005152ms GPU, 0.50s total GPU, 0.50s total wall, 97042x
+Run:  [12/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^12 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.009240ms GPU, 0.029072ms CPU, 0.50s total GPU, 5.48s total wall, 54114x 
+Pass: Batch: 0.005150ms GPU, 0.50s total GPU, 0.50s total wall, 97099x
+Run:  [13/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^13 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.011340ms GPU, 0.031162ms CPU, 0.50s total GPU, 4.27s total wall, 44093x 
+Pass: Batch: 0.005695ms GPU, 0.50s total GPU, 0.50s total wall, 87799x
+Run:  [14/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^14 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.015848ms GPU, 0.035365ms CPU, 0.50s total GPU, 2.92s total wall, 31550x 
+Pass: Batch: 0.010058ms GPU, 0.50s total GPU, 0.50s total wall, 49711x
+Run:  [15/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^15 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.024559ms GPU, 0.043839ms CPU, 0.50s total GPU, 1.90s total wall, 20360x 
+Pass: Batch: 0.018835ms GPU, 0.50s total GPU, 0.50s total wall, 26547x
+Run:  [16/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^16 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.042226ms GPU, 0.063198ms CPU, 0.50s total GPU, 1.26s total wall, 11841x 
+Pass: Batch: 0.036469ms GPU, 0.50s total GPU, 0.50s total wall, 13711x
+Run:  [17/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^17 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.077486ms GPU, 0.098588ms CPU, 0.50s total GPU, 0.89s total wall, 6453x 
+Pass: Batch: 0.071600ms GPU, 0.50s total GPU, 0.50s total wall, 6984x
+Run:  [18/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^18 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.148107ms GPU, 0.169093ms CPU, 0.50s total GPU, 0.70s total wall, 3376x 
+Pass: Batch: 0.142019ms GPU, 0.51s total GPU, 0.51s total wall, 3569x
+Run:  [19/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^19 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.290917ms GPU, 0.311933ms CPU, 0.50s total GPU, 0.60s total wall, 1719x 
+Pass: Batch: 0.284823ms GPU, 0.52s total GPU, 0.52s total wall, 1809x
+Run:  [20/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^20 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 0.571230ms GPU, 0.591924ms CPU, 0.50s total GPU, 0.55s total wall, 876x 
+Pass: Batch: 0.565884ms GPU, 0.52s total GPU, 0.52s total wall, 921x
+Run:  [21/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^21 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 1.135405ms GPU, 1.156476ms CPU, 0.50s total GPU, 0.53s total wall, 441x 
+Pass: Batch: 1.129771ms GPU, 0.52s total GPU, 0.52s total wall, 463x
+Run:  [22/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^22 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 2.265829ms GPU, 2.286934ms CPU, 0.50s total GPU, 0.51s total wall, 221x 
+Pass: Batch: 2.257765ms GPU, 0.52s total GPU, 0.52s total wall, 232x
+Run:  [23/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^23 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 4.518746ms GPU, 4.539303ms CPU, 0.50s total GPU, 0.51s total wall, 111x 
+Pass: Batch: 4.513404ms GPU, 0.52s total GPU, 0.52s total wall, 116x
+Run:  [24/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^24 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 9.029595ms GPU, 9.049479ms CPU, 0.51s total GPU, 0.51s total wall, 56x 
+Pass: Batch: 9.024600ms GPU, 0.52s total GPU, 0.52s total wall, 58x
+Run:  [25/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^25 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 18.051474ms GPU, 18.071433ms CPU, 0.51s total GPU, 0.51s total wall, 28x 
+Pass: Batch: 18.047117ms GPU, 0.52s total GPU, 0.52s total wall, 29x
+Run:  [26/32] Simple Histogram (Different Array sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 36.125038ms GPU, 36.144578ms CPU, 0.51s total GPU, 0.51s total wall, 14x 
+Pass: Batch: 36.092108ms GPU, 0.54s total GPU, 0.54s total wall, 15x
+Run:  [27/32] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^5]
+Pass: Cold: 22.588817ms GPU, 22.608215ms CPU, 0.52s total GPU, 0.52s total wall, 23x 
+Pass: Batch: 22.587435ms GPU, 0.54s total GPU, 0.54s total wall, 24x
+Run:  [28/32] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^6]
+Pass: Cold: 11.432145ms GPU, 11.452024ms CPU, 0.50s total GPU, 0.51s total wall, 44x 
+Pass: Batch: 11.451870ms GPU, 0.52s total GPU, 0.52s total wall, 45x
+Run:  [29/32] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^7]
+Pass: Cold: 5.744372ms GPU, 5.764686ms CPU, 0.51s total GPU, 0.51s total wall, 88x 
+Pass: Batch: 5.739036ms GPU, 0.52s total GPU, 0.52s total wall, 91x
+Run:  [30/32] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^8]
+Pass: Cold: 2.882160ms GPU, 2.902351ms CPU, 0.50s total GPU, 0.51s total wall, 174x 
+Pass: Batch: 2.876686ms GPU, 0.52s total GPU, 0.52s total wall, 182x
+Run:  [31/32] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^9]
+Pass: Cold: 1.466758ms GPU, 1.487226ms CPU, 0.50s total GPU, 0.52s total wall, 341x 
+Pass: Batch: 1.461151ms GPU, 0.52s total GPU, 0.52s total wall, 358x
+Run:  [32/32] Histogram Shared Bins (Different Grid and Block sizes) [Device=0 Array Size=2^26 Num Bins=2^9 Num Threads=2^10]
+Pass: Cold: 1.531315ms GPU, 1.552450ms CPU, 0.50s total GPU, 0.52s total wall, 327x 
+Pass: Batch: 1.523900ms GPU, 0.52s total GPU, 0.52s total wall, 343x
 ```
 
 # Benchmark Results
@@ -83,19 +122,32 @@ Pass: Batch: 1.518007ms GPU, 0.52s total GPU, 0.52s total wall, 345x
 
 |   Array Size    | Num Bins  | Num Threads | Num Elements | Memory Reads | Memory Writes | Samples |  CPU Time  |  Noise  |  GPU Time  | Noise  |  Elem/s  | GlobalMem BW | BWUtil | Samples | Batch GPU  |
 |-----------------|-----------|-------------|--------------|--------------|---------------|---------|------------|---------|------------|--------|----------|--------------|--------|---------|------------|
-|         2^2 = 4 | 2^9 = 512 |   2^9 = 512 |            4 |     16.000 B |     2.000 KiB |  76401x |  26.624 us | 310.17% |   6.544 us | 13.47% | 611.202K | 315.380 MB/s |  0.09% |  96881x |   5.161 us |
-|        2^4 = 16 | 2^9 = 512 |   2^9 = 512 |           16 |     64.000 B |     2.000 KiB |  76962x |  25.847 us | 300.57% |   6.497 us | 13.20% |   2.463M | 325.086 MB/s |  0.09% |  96831x |   5.164 us |
-|        2^6 = 64 | 2^9 = 512 |   2^9 = 512 |           64 |    256.000 B |     2.000 KiB |  76686x |  25.945 us | 303.59% |   6.520 us | 13.25% |   9.816M | 353.367 MB/s |  0.10% |  96858x |   5.162 us |
-|       2^8 = 256 | 2^9 = 512 |   2^9 = 512 |          256 |    1.000 KiB |     2.000 KiB |  72361x |  26.282 us | 283.11% |   6.910 us | 13.37% |  37.049M | 444.583 MB/s |  0.12% |  96838x |   5.163 us |
-|     2^10 = 1024 | 2^9 = 512 |   2^9 = 512 |         1024 |    4.000 KiB |     2.000 KiB |  68064x |  26.422 us | 271.58% |   7.346 us | 11.70% | 139.393M | 836.359 MB/s |  0.23% |  96965x |   5.157 us |
-|     2^12 = 4096 | 2^9 = 512 |   2^9 = 512 |         4096 |   16.000 KiB |     2.000 KiB |  54159x |  28.601 us | 211.51% |   9.232 us |  9.36% | 443.669M |   1.997 GB/s |  0.55% |  97028x |   5.153 us |
-|    2^14 = 16384 | 2^9 = 512 |   2^9 = 512 |        16384 |   64.000 KiB |     2.000 KiB |  31955x |  35.219 us | 126.46% |  15.647 us |  6.36% |   1.047G |   4.319 GB/s |  1.20% |  49613x |  10.078 us |
-|    2^16 = 65536 | 2^9 = 512 |   2^9 = 512 |        65536 |  256.000 KiB |     2.000 KiB |  11784x |  63.087 us |  49.22% |  42.433 us |  2.16% |   1.544G |   6.226 GB/s |  1.73% |  13543x |  36.919 us |
-|   2^18 = 262144 | 2^9 = 512 |   2^9 = 512 |       262144 |    1.000 MiB |     2.000 KiB |   3340x | 170.600 us |  14.05% | 149.735 us |  0.61% |   1.751G |   7.017 GB/s |  1.95% |   3479x | 143.742 us |
-|  2^20 = 1048576 | 2^9 = 512 |   2^9 = 512 |      1048576 |    4.000 MiB |     2.000 KiB |    865x | 599.073 us |   3.65% | 578.139 us |  0.17% |   1.814G |   7.258 GB/s |  2.02% |    909x | 572.693 us |
-|  2^22 = 4194304 | 2^9 = 512 |   2^9 = 512 |      4194304 |   16.000 MiB |     2.000 KiB |    219x |   2.311 ms |   0.92% |   2.291 ms |  0.05% |   1.831G |   7.325 GB/s |  2.03% |    229x |   2.288 ms |
-| 2^24 = 16777216 | 2^9 = 512 |   2^9 = 512 |     16777216 |   64.000 MiB |     2.000 KiB |     55x |   9.161 ms |   0.23% |   9.140 ms |  0.01% |   1.836G |   7.342 GB/s |  2.04% |     57x |   9.135 ms |
-| 2^26 = 67108864 | 2^9 = 512 |   2^9 = 512 |     67108864 |  256.000 MiB |     2.000 KiB |     14x |  36.556 ms |   0.06% |  36.534 ms |  0.00% |   1.837G |   7.348 GB/s |  2.04% |     15x |  36.532 ms |
+|         2^1 = 2 | 2^9 = 512 |   2^9 = 512 |            2 |      8.000 B |     2.000 KiB |  73217x |  26.408 us | 299.16% |   6.829 us | 13.54% | 292.865K | 301.065 MB/s |  0.08% |  96835x |   5.163 us |
+|         2^2 = 4 | 2^9 = 512 |   2^9 = 512 |            4 |     16.000 B |     2.000 KiB |  71544x |  26.722 us | 285.79% |   6.989 us | 13.10% | 572.346K | 295.331 MB/s |  0.08% |  96826x |   5.164 us |
+|         2^3 = 8 | 2^9 = 512 |   2^9 = 512 |            8 |     32.000 B |     2.000 KiB |  71997x |  26.652 us | 287.20% |   6.945 us | 13.23% |   1.152M | 299.503 MB/s |  0.08% |  96870x |   5.162 us |
+|        2^4 = 16 | 2^9 = 512 |   2^9 = 512 |           16 |     64.000 B |     2.000 KiB |  71597x |  26.801 us | 287.22% |   6.984 us | 13.20% |   2.291M | 302.423 MB/s |  0.08% |  96879x |   5.162 us |
+|        2^5 = 32 | 2^9 = 512 |   2^9 = 512 |           32 |    128.000 B |     2.000 KiB |  71324x |  26.414 us | 280.32% |   7.010 us | 13.05% |   4.565M | 310.398 MB/s |  0.09% |  96849x |   5.163 us |
+|        2^6 = 64 | 2^9 = 512 |   2^9 = 512 |           64 |    256.000 B |     2.000 KiB |  70030x |  26.807 us | 280.13% |   7.140 us | 12.44% |   8.964M | 322.696 MB/s |  0.09% |  96840x |   5.163 us |
+|       2^7 = 128 | 2^9 = 512 |   2^9 = 512 |          128 |    512.000 B |     2.000 KiB |  71850x |  26.057 us | 277.29% |   6.959 us | 13.11% |  18.394M | 367.871 MB/s |  0.10% |  96887x |   5.161 us |
+|       2^8 = 256 | 2^9 = 512 |   2^9 = 512 |          256 |    1.000 KiB |     2.000 KiB |  70705x |  26.909 us | 283.11% |   7.072 us | 13.09% |  36.201M | 434.408 MB/s |  0.12% | 102796x |   5.162 us |
+|       2^9 = 512 | 2^9 = 512 |   2^9 = 512 |          512 |    2.000 KiB |     2.000 KiB |  66653x |  27.485 us | 269.85% |   7.502 us | 11.16% |  68.252M | 546.017 MB/s |  0.15% |  96959x |   5.157 us |
+|     2^10 = 1024 | 2^9 = 512 |   2^9 = 512 |         1024 |    4.000 KiB |     2.000 KiB |  65887x |  27.077 us | 259.24% |   7.589 us | 10.89% | 134.934M | 809.607 MB/s |  0.22% |  96936x |   5.158 us |
+|     2^11 = 2048 | 2^9 = 512 |   2^9 = 512 |         2048 |    8.000 KiB |     2.000 KiB |  61358x |  27.315 us | 239.14% |   8.149 us | 10.80% | 251.322M |   1.257 GB/s |  0.35% |  97042x |   5.152 us |
+|     2^12 = 4096 | 2^9 = 512 |   2^9 = 512 |         4096 |   16.000 KiB |     2.000 KiB |  54114x |  29.072 us | 216.35% |   9.240 us |  9.53% | 443.295M |   1.995 GB/s |  0.55% |  97099x |   5.150 us |
+|     2^13 = 8192 | 2^9 = 512 |   2^9 = 512 |         8192 |   32.000 KiB |     2.000 KiB |  44093x |  31.162 us | 176.40% |  11.340 us |  8.61% | 722.407M |   3.070 GB/s |  0.85% |  87799x |   5.695 us |
+|    2^14 = 16384 | 2^9 = 512 |   2^9 = 512 |        16384 |   64.000 KiB |     2.000 KiB |  31550x |  35.365 us | 124.58% |  15.848 us |  5.98% |   1.034G |   4.265 GB/s |  1.18% |  49711x |  10.058 us |
+|    2^15 = 32768 | 2^9 = 512 |   2^9 = 512 |        32768 |  128.000 KiB |     2.000 KiB |  20360x |  43.839 us |  79.37% |  24.559 us |  3.59% |   1.334G |   5.420 GB/s |  1.51% |  26547x |  18.835 us |
+|    2^16 = 65536 | 2^9 = 512 |   2^9 = 512 |        65536 |  256.000 KiB |     2.000 KiB |  11841x |  63.198 us |  50.14% |  42.226 us |  2.21% |   1.552G |   6.257 GB/s |  1.74% |  13711x |  36.469 us |
+|   2^17 = 131072 | 2^9 = 512 |   2^9 = 512 |       131072 |  512.000 KiB |     2.000 KiB |   6453x |  98.588 us |  28.25% |  77.486 us |  1.25% |   1.692G |   6.793 GB/s |  1.89% |   6984x |  71.600 us |
+|   2^18 = 262144 | 2^9 = 512 |   2^9 = 512 |       262144 |    1.000 MiB |     2.000 KiB |   3376x | 169.093 us |  14.35% | 148.107 us |  0.58% |   1.770G |   7.094 GB/s |  1.97% |   3569x | 142.019 us |
+|   2^19 = 524288 | 2^9 = 512 |   2^9 = 512 |       524288 |    2.000 MiB |     2.000 KiB |   1719x | 311.933 us |   7.28% | 290.917 us |  0.35% |   1.802G |   7.216 GB/s |  2.00% |   1809x | 284.823 us |
+|  2^20 = 1048576 | 2^9 = 512 |   2^9 = 512 |      1048576 |    4.000 MiB |     2.000 KiB |    876x | 591.924 us |   3.65% | 571.230 us |  0.15% |   1.836G |   7.346 GB/s |  2.04% |    921x | 565.884 us |
+|  2^21 = 2097152 | 2^9 = 512 |   2^9 = 512 |      2097152 |    8.000 MiB |     2.000 KiB |    441x |   1.156 ms |   1.88% |   1.135 ms |  0.13% |   1.847G |   7.390 GB/s |  2.05% |    463x |   1.130 ms |
+|  2^22 = 4194304 | 2^9 = 512 |   2^9 = 512 |      4194304 |   16.000 MiB |     2.000 KiB |    221x |   2.287 ms |   2.10% |   2.266 ms |  1.88% |   1.851G |   7.405 GB/s |  2.06% |    232x |   2.258 ms |
+|  2^23 = 8388608 | 2^9 = 512 |   2^9 = 512 |      8388608 |   32.000 MiB |     2.000 KiB |    111x |   4.539 ms |   0.46% |   4.519 ms |  0.02% |   1.856G |   7.426 GB/s |  2.06% |    116x |   4.513 ms |
+| 2^24 = 16777216 | 2^9 = 512 |   2^9 = 512 |     16777216 |   64.000 MiB |     2.000 KiB |     56x |   9.049 ms |   0.22% |   9.030 ms |  0.01% |   1.858G |   7.432 GB/s |  2.06% |     58x |   9.025 ms |
+| 2^25 = 33554432 | 2^9 = 512 |   2^9 = 512 |     33554432 |  128.000 MiB |     2.000 KiB |     28x |  18.071 ms |   0.11% |  18.051 ms |  0.01% |   1.859G |   7.435 GB/s |  2.07% |     29x |  18.047 ms |
+| 2^26 = 67108864 | 2^9 = 512 |   2^9 = 512 |     67108864 |  256.000 MiB |     2.000 KiB |     14x |  36.145 ms |   0.32% |  36.125 ms |  0.32% |   1.858G |   7.431 GB/s |  2.06% |     15x |  36.092 ms |
 
 ## Histogram Shared Bins (Different Grid and Block sizes)
 
@@ -103,9 +155,9 @@ Pass: Batch: 1.518007ms GPU, 0.52s total GPU, 0.52s total wall, 345x
 
 |   Array Size    | Num Bins  | Num Threads | Num Elements | Memory Reads | Memory Writes | Samples | CPU Time  | Noise | GPU Time  | Noise | Elem/s  | GlobalMem BW | BWUtil | Samples | Batch GPU |
 |-----------------|-----------|-------------|--------------|--------------|---------------|---------|-----------|-------|-----------|-------|---------|--------------|--------|---------|-----------|
-| 2^26 = 67108864 | 2^9 = 512 |    2^5 = 32 |     67108864 |  256.000 MiB |     2.000 KiB |     22x | 22.822 ms | 0.10% | 22.801 ms | 0.00% |  2.943G |  11.773 GB/s |  3.27% |     23x | 22.799 ms |
-| 2^26 = 67108864 | 2^9 = 512 |    2^6 = 64 |     67108864 |  256.000 MiB |     2.000 KiB |     44x | 11.438 ms | 0.18% | 11.418 ms | 0.01% |  5.878G |  23.511 GB/s |  6.53% |     46x | 11.413 ms |
-| 2^26 = 67108864 | 2^9 = 512 |   2^7 = 128 |     67108864 |  256.000 MiB |     2.000 KiB |     88x |  5.760 ms | 0.36% |  5.740 ms | 0.02% | 11.691G |  46.764 GB/s | 12.99% |     91x |  5.735 ms |
-| 2^26 = 67108864 | 2^9 = 512 |   2^8 = 256 |     67108864 |  256.000 MiB |     2.000 KiB |    173x |  2.915 ms | 0.73% |  2.894 ms | 0.03% | 23.191G |  92.766 GB/s | 25.76% |    181x |  2.888 ms |
-| 2^26 = 67108864 | 2^9 = 512 |   2^9 = 512 |     67108864 |  256.000 MiB |     2.000 KiB |    344x |  1.478 ms | 1.50% |  1.458 ms | 0.49% | 46.040G | 184.160 GB/s | 51.15% |    362x |  1.451 ms |
-| 2^26 = 67108864 | 2^9 = 512 | 2^10 = 1024 |     67108864 |  256.000 MiB |     2.000 KiB |    328x |  1.546 ms | 1.38% |  1.525 ms | 0.10% | 44.001G | 176.005 GB/s | 48.88% |    345x |  1.518 ms |
+| 2^26 = 67108864 | 2^9 = 512 |    2^5 = 32 |     67108864 |  256.000 MiB |     2.000 KiB |     23x | 22.608 ms | 0.09% | 22.589 ms | 0.01% |  2.971G |  11.884 GB/s |  3.30% |     24x | 22.587 ms |
+| 2^26 = 67108864 | 2^9 = 512 |    2^6 = 64 |     67108864 |  256.000 MiB |     2.000 KiB |     44x | 11.452 ms | 0.30% | 11.432 ms | 0.23% |  5.870G |  23.481 GB/s |  6.52% |     45x | 11.452 ms |
+| 2^26 = 67108864 | 2^9 = 512 |   2^7 = 128 |     67108864 |  256.000 MiB |     2.000 KiB |     88x |  5.765 ms | 0.36% |  5.744 ms | 0.03% | 11.683G |  46.731 GB/s | 12.98% |     91x |  5.739 ms |
+| 2^26 = 67108864 | 2^9 = 512 |   2^8 = 256 |     67108864 |  256.000 MiB |     2.000 KiB |    174x |  2.902 ms | 0.71% |  2.882 ms | 0.03% | 23.284G |  93.138 GB/s | 25.87% |    182x |  2.877 ms |
+| 2^26 = 67108864 | 2^9 = 512 |   2^9 = 512 |     67108864 |  256.000 MiB |     2.000 KiB |    341x |  1.487 ms | 1.41% |  1.467 ms | 0.08% | 45.753G | 183.014 GB/s | 50.83% |    358x |  1.461 ms |
+| 2^26 = 67108864 | 2^9 = 512 | 2^10 = 1024 |     67108864 |  256.000 MiB |     2.000 KiB |    327x |  1.552 ms | 1.39% |  1.531 ms | 0.08% | 43.824G | 175.299 GB/s | 48.69% |    343x |  1.524 ms |
