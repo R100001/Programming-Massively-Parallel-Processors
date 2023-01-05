@@ -113,7 +113,7 @@ def main():
 
     y_axis_metrics = ('Elements per Second (Giga)',
                       'Memory Bandwidth (GB per s)',
-                      'Memory Bandwidth Utilization (%)',
+                      'Memory Bandwidth Utilization',
                       'GPU Time (ms)')
 
     y_axis_fs = (lambda x : float(x) / 1000 / 1000 / 1000,
