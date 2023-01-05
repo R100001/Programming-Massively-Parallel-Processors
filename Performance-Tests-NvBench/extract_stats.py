@@ -43,6 +43,8 @@ def read_sort_csv(path):
                 data.append(list(zip(*[row for row in reader if row[head.index('Skipped')] == 'No'])))
 
     # Sort the data by putting the most recent GPUs first.
+    # Comment the next lines if you use this script for different GPUs.
+    # Or change the sorting order to your needs.
     data[3], data[0] = data[0], data[3]
     data[4], data[1] = data[1], data[4]
     data[6], data[2] = data[2], data[6]
