@@ -11,12 +11,17 @@ void Kogge_Stone_inclusive_scan(T *X, T *Y, int n, T *S = NULL){
 
     // Load elements into shared memory
     if(i < n) XY[threadIdx.x] = X[i];
+        
+    __syncthreads();
 
     // Perform scan operation
     for (unsigned int stride = 1; stride < blockDim.x; stride <<= 1){
-        
-       __syncthreads();
-        if (threadIdx.x >= stride) XY[threadIdx.x] += XY[threadIdx.x - stride];
+
+        if (threadIdx.x >= stride) XY[blockDim.x + threadIdx.x] = XY[threadIdx.x] + XY[threadIdx.x - stride];
+        __syncthreads();
+
+        if (threadIdx.x >= stride) XY[threadIdx.x] = XY[blockDim.x + threadIdx.x];
+        __syncthreads();
     }
 
     // Write results
@@ -52,8 +57,11 @@ void Brent_Kung_inclusive_scan(T *X, T *Y, int n, T *S = NULL){
     for (unsigned int stride = 1; stride <= blockDim.x; stride <<= 1){
 
         unsigned int index = (tx + 1) * stride * 2 - 1;
-        if(index < 2 * blockDim.x) XY[index] += XY[index - stride];
 
+        if(index < 2 * blockDim.x) XY[2 * blockDim.x + index] = XY[index] + XY[index - stride];
+        __syncthreads();
+
+        if(index < 2 * blockDim.x) XY[index] = XY[2 * blockDim.x + index];
         __syncthreads();
     }
 
@@ -61,8 +69,11 @@ void Brent_Kung_inclusive_scan(T *X, T *Y, int n, T *S = NULL){
     for (unsigned int stride = blockDim.x / 2; stride > 0; stride >>= 1){
 
         unsigned int index = (tx + 1) * stride * 2 - 1;
-        if(index + stride < 2 * blockDim.x) XY[index + stride] += XY[index];
 
+        if(index + stride < 2 * blockDim.x) XY[2 * blockDim.x + index + stride] = XY[index + stride] + XY[index];
+        __syncthreads();
+
+        if(index + stride < 2 * blockDim.x) XY[index + stride] = XY[2 * blockDim.x + index + stride];
         __syncthreads();
     }
 
@@ -165,7 +176,83 @@ void add_intermediate_results(T *Y, int n, T *S, int size){
 
 // This function can handle up to shared_mem_size * (max grid x-dimension size) elements 
 template<typename T>
-void hierarchical_scan(T *X, T *Y, int n, nvbench::launch &launch){
+void hierarchical_scan_Kogge_Stone(T *X, T *Y, int n, nvbench::launch &launch){
+
+    T *d_S;
+
+    int t_x = 512; // 2^9
+
+    int shared_mem_size = 2 * t_x;
+
+    int elems_per_block = t_x;
+
+    int blocks = (n + elems_per_block - 1) / elems_per_block;
+
+    // Allocate memory on the device for the intermediate results
+    cudaMalloc((void **)&d_S, blocks * sizeof(T));
+
+    // Perform scan operation
+    Kogge_Stone_inclusive_scan<T><<<blocks, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
+        X, Y, n, d_S);
+
+    if(blocks > elems_per_block) hierarchical_scan_Kogge_Stone<T>(d_S, d_S, blocks, launch);
+
+    if(blocks > 1){
+
+        if(blocks <= elems_per_block)
+            Kogge_Stone_inclusive_scan<T><<<1, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
+                d_S, d_S, blocks, NULL);
+
+        // Add the intermediate results to the final results
+        add_intermediate_results<T><<<blocks - 1, t_x, 0, launch.get_stream()>>>(
+            Y + elems_per_block, n - elems_per_block, d_S, elems_per_block);
+    }
+
+    // Free memory on the device
+    cudaFree(d_S);
+}
+
+// This function can handle up to shared_mem_size * (max grid x-dimension size) elements 
+template<typename T>
+void hierarchical_scan_Brent_Kung(T *X, T *Y, int n, nvbench::launch &launch){
+
+    T *d_S;
+
+    int t_x = 512; // 2^9
+
+    int shared_mem_size = 4 * t_x;
+
+    int elems_per_block = 2 * t_x;
+
+    int blocks = (n + elems_per_block - 1) / elems_per_block;
+
+    // Allocate memory on the device for the intermediate results
+    cudaMalloc((void **)&d_S, blocks * sizeof(T));
+
+    // Perform scan operation
+    Brent_Kung_inclusive_scan<T><<<blocks, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
+        X, Y, n, d_S);
+
+    if(blocks > elems_per_block) hierarchical_scan_Brent_Kung<T>(d_S, d_S, blocks, launch);
+
+    if(blocks > 1){
+
+        if(blocks <= elems_per_block)
+            Brent_Kung_inclusive_scan<T><<<1, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
+                d_S, d_S, blocks, NULL);
+            
+        // Add the intermediate results to the final results
+        add_intermediate_results<T><<<blocks - 1, t_x, 0, launch.get_stream()>>>(
+            Y + elems_per_block, n - elems_per_block, d_S, elems_per_block);
+    }
+
+    // Free memory on the device
+    cudaFree(d_S);
+}
+
+// This function can handle up to shared_mem_size * (max grid x-dimension size) elements 
+template<typename T>
+void hierarchical_scan_three_phase(T *X, T *Y, int n, nvbench::launch &launch){
 
     T *d_S;
 
@@ -184,12 +271,14 @@ void hierarchical_scan(T *X, T *Y, int n, nvbench::launch &launch){
     three_phase_parallel_inclusive_scan<T><<<blocks, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
         X, Y, n, shared_mem_size, d_S);
 
-    if(blocks > elems_per_block) hierarchical_scan<T>(d_S, d_S, blocks, launch);
+    if(blocks > elems_per_block) hierarchical_scan_three_phase<T>(d_S, d_S, blocks, launch);
 
     if(blocks > 1){
-        three_phase_parallel_inclusive_scan<T><<<1, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
-            d_S, d_S, blocks, shared_mem_size, NULL);
-            
+
+        if(blocks <= elems_per_block)
+            three_phase_parallel_inclusive_scan<T><<<1, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
+                d_S, d_S, blocks, shared_mem_size, NULL);
+
         // Add the intermediate results to the final results
         add_intermediate_results<T><<<blocks - 1, t_x, 0, launch.get_stream()>>>(
             Y + elems_per_block, n - elems_per_block, d_S, elems_per_block);
