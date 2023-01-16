@@ -115,6 +115,6 @@ We can observe a few things:
 - When the kernel access elements in a coalesced manner all the GPUs achieve better performance as expected. 
 - The kernel that accesses elements in a non-coalesced manner achieves the best memory bandwidth when the axis size is 1024 and then the bandwidth either drops or gets a bit higher. 
 
-A reason for the latter might be that each Streaming Multiprocessor (SM) can have up to 1024 threads in older GPUs (GTX 1650 and RTX 2060) and the other GPUs (RTX 3060l, 3060, 3060ti, 3070ti, 3080) can have up to 1536 threads. This means that between SMs there is a change that the threads will try to load elements that are adjacent to each other. This possibility drops as the axis size increases and SMs might load elements from the same column.
+A reason for the latter might be that each Streaming Multiprocessor (SM) can have up to 1024 threads in older GPUs (GTX 1650 and RTX 2060) and the other GPUs (RTX 3060l, 3060, 3060ti, 3070ti, 3080) can have up to 1536 threads. This means that between SMs there is a change that the threads will try to load elements that are adjacent to each other. This possibility drops as the axis size increases.
 
 ---

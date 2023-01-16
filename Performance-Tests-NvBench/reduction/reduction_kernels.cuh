@@ -65,7 +65,7 @@ void reduction3(T* X, uint32_t n, T* Y){
     // Accumulate the elements using reduction
     for(uint32_t stride = blockDim.x / 2; stride > 0; stride >>= 1){
         if(tx < stride)
-            partial_sum[tx] += tx + stride < n ? partial_sum[tx + stride] : 0;
+            partial_sum[tx] += partial_sum[tx + stride];
         __syncthreads();
     }
 
@@ -84,6 +84,7 @@ void reduction4(T* X, uint32_t n, T* Y){
     // Load the elements of the array into the shared memory
     partial_sum[tx] = i < n ? X[i] : 0;
     partial_sum[tx] += i + blockDim.x < n ? X[i + blockDim.x] : 0;
+    __syncthreads();
 
     // Accumulate the elements using reduction
     for(uint32_t stride = blockDim.x / 2; stride > 0; stride >>= 1){
