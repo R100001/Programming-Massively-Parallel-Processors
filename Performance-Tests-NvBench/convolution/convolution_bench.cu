@@ -293,7 +293,7 @@ NVBENCH_BENCH(convolution_1D_tiled_kernel_bench)
 
 NVBENCH_BENCH(convolution_1D_tiled_kernel_bench)
     .set_name("Convolution 1D Tiled (Different Mask Sizes)")
-    .add_int64_power_of_two_axis("Array size", nvbench::range(26, 26, 1))
+    .add_int644_power_of_two_axis("Array size", nvbench::range(26, 26, 1))
     .add_int64_axis("Mask width", nvbench::range(3, 11, 2))
     .add_int64_power_of_two_axis("Block dim", nvbench::range(9, 9, 1))
     .set_max_noise(0.2)

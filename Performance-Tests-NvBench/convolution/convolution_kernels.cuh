@@ -157,6 +157,7 @@ void convolution_2D_tiled_kernel(float *N, float *P,
     int col_i = col_o - (mask_width / 2);
 
     for(int c = 0; c < channels; ++c){
+        
         if(row_i >= 0 && row_i < height && col_i >= 0 && col_i < width)
             N_ds[ty * blockDim.x + tx] = N[(row_i * width + col_i) * channels + c];
         else
