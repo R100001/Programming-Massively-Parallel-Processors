@@ -1,6 +1,6 @@
 #include <iostream>
 
-// This kernel can handle up to min(shared_mem_size, max threads per block) elements
+// This kernel can handle up to min(shared_mem_size, max threads per block) / 2 elements
 template<typename T> __global__
 void Kogge_Stone_inclusive_scan(T *X, T *Y, int n, T *S = NULL){
 
@@ -38,7 +38,7 @@ void Kogge_Stone_inclusive_scan(T *X, T *Y, int n, T *S = NULL){
 //----------------------------------------------------------------------
 
 
-// This kernel can handle up to min(2 * shared_mem_size, 2 * max threads per block) elements
+// This kernel can handle up to 2 * min(shared_mem_size, max threads per block) elements
 template<typename T> __global__
 void Brent_Kung_inclusive_scan(T *X, T *Y, int n, T *S = NULL){
 
@@ -58,10 +58,7 @@ void Brent_Kung_inclusive_scan(T *X, T *Y, int n, T *S = NULL){
 
         unsigned int index = (tx + 1) * stride * 2 - 1;
 
-        if(index < 2 * blockDim.x) XY[2 * blockDim.x + index] = XY[index] + XY[index - stride];
-        __syncthreads();
-
-        if(index < 2 * blockDim.x) XY[index] = XY[2 * blockDim.x + index];
+        if(index < 2 * blockDim.x) XY[index] += XY[index - stride];
         __syncthreads();
     }
 
@@ -70,10 +67,7 @@ void Brent_Kung_inclusive_scan(T *X, T *Y, int n, T *S = NULL){
 
         unsigned int index = (tx + 1) * stride * 2 - 1;
 
-        if(index + stride < 2 * blockDim.x) XY[2 * blockDim.x + index + stride] = XY[index + stride] + XY[index];
-        __syncthreads();
-
-        if(index + stride < 2 * blockDim.x) XY[index + stride] = XY[2 * blockDim.x + index + stride];
+        if(index + stride < 2 * blockDim.x) XY[index + stride] += XY[index];
         __syncthreads();
     }
 
@@ -174,17 +168,11 @@ void add_intermediate_results(T *Y, int n, T *S, int size){
 
 }
 
-// This function can handle up to shared_mem_size * (max grid x-dimension size) elements 
+// This function can handle up to min(shared_mem_size, max threads per block) / 2 * (max grid x-dimension size) elements 
 template<typename T>
-void hierarchical_scan_Kogge_Stone(T *X, T *Y, int n, nvbench::launch &launch){
+void hierarchical_scan_Kogge_Stone(T *X, T *Y, int n, int t_x, int shared_mem_size, int elems_per_block, nvbench::launch &launch){
 
     T *d_S;
-
-    int t_x = 512; // 2^9
-
-    int shared_mem_size = 2 * t_x;
-
-    int elems_per_block = t_x;
 
     int blocks = (n + elems_per_block - 1) / elems_per_block;
 
@@ -195,7 +183,8 @@ void hierarchical_scan_Kogge_Stone(T *X, T *Y, int n, nvbench::launch &launch){
     Kogge_Stone_inclusive_scan<T><<<blocks, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
         X, Y, n, d_S);
 
-    if(blocks > elems_per_block) hierarchical_scan_Kogge_Stone<T>(d_S, d_S, blocks, launch);
+    if(blocks > elems_per_block) 
+        hierarchical_scan_Kogge_Stone<T>(d_S, d_S, blocks, t_x, shared_mem_size, elems_per_block, launch);
 
     if(blocks > 1){
 
@@ -212,17 +201,11 @@ void hierarchical_scan_Kogge_Stone(T *X, T *Y, int n, nvbench::launch &launch){
     cudaFree(d_S);
 }
 
-// This function can handle up to shared_mem_size * (max grid x-dimension size) elements 
+// This function can handle up to 2 * min(shared_mem_size, max threads per block) * (max grid x-dimension size) elements 
 template<typename T>
-void hierarchical_scan_Brent_Kung(T *X, T *Y, int n, nvbench::launch &launch){
+void hierarchical_scan_Brent_Kung(T *X, T *Y, int n, int t_x, int shared_mem_size, int elems_per_block, nvbench::launch &launch){
 
     T *d_S;
-
-    int t_x = 512; // 2^9
-
-    int shared_mem_size = 4 * t_x;
-
-    int elems_per_block = 2 * t_x;
 
     int blocks = (n + elems_per_block - 1) / elems_per_block;
 
@@ -233,7 +216,8 @@ void hierarchical_scan_Brent_Kung(T *X, T *Y, int n, nvbench::launch &launch){
     Brent_Kung_inclusive_scan<T><<<blocks, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
         X, Y, n, d_S);
 
-    if(blocks > elems_per_block) hierarchical_scan_Brent_Kung<T>(d_S, d_S, blocks, launch);
+    if(blocks > elems_per_block) 
+        hierarchical_scan_Brent_Kung<T>(d_S, d_S, blocks, t_x, shared_mem_size, elems_per_block, launch);
 
     if(blocks > 1){
 
@@ -252,15 +236,9 @@ void hierarchical_scan_Brent_Kung(T *X, T *Y, int n, nvbench::launch &launch){
 
 // This function can handle up to shared_mem_size * (max grid x-dimension size) elements 
 template<typename T>
-void hierarchical_scan_three_phase(T *X, T *Y, int n, nvbench::launch &launch){
+void hierarchical_scan_three_phase(T *X, T *Y, int n, int t_x, int shared_mem_size, int elems_per_block, nvbench::launch &launch){
 
     T *d_S;
-
-    int t_x = 512; // 2^9
-
-    int shared_mem_size = 4096; // 2^12
-
-    int elems_per_block = shared_mem_size;
 
     int blocks = (n + elems_per_block - 1) / elems_per_block;
 
@@ -271,7 +249,8 @@ void hierarchical_scan_three_phase(T *X, T *Y, int n, nvbench::launch &launch){
     three_phase_parallel_inclusive_scan<T><<<blocks, t_x, shared_mem_size * sizeof(T), launch.get_stream()>>>(
         X, Y, n, shared_mem_size, d_S);
 
-    if(blocks > elems_per_block) hierarchical_scan_three_phase<T>(d_S, d_S, blocks, launch);
+    if(blocks > elems_per_block) 
+        hierarchical_scan_three_phase<T>(d_S, d_S, blocks, t_x, shared_mem_size, elems_per_block, launch);
 
     if(blocks > 1){
 

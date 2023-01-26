@@ -95,7 +95,7 @@ void hierarchical_scan_Kogge_Stone_bench(nvbench::state &state, nvbench::type_li
         hierarchical_scan_Kogge_Stone<T>(
             thrust::raw_pointer_cast(input.data()), 
             thrust::raw_pointer_cast(output.data()),
-            num_elements, launch);
+            num_elements, 512, 1024, 512, launch);
     });
 }
 
@@ -119,7 +119,7 @@ void hierarchical_scan_Brent_Kung_bench(nvbench::state &state, nvbench::type_lis
         hierarchical_scan_Brent_Kung<T>(
             thrust::raw_pointer_cast(input.data()), 
             thrust::raw_pointer_cast(output.data()),
-            num_elements, launch);
+            num_elements, 512, 2048, 1024, launch);
     });
 }
 
@@ -143,7 +143,7 @@ void hierarchical_scan_three_phase_bench(nvbench::state &state, nvbench::type_li
         hierarchical_scan_three_phase<T>(
             thrust::raw_pointer_cast(input.data()), 
             thrust::raw_pointer_cast(output.data()),
-            num_elements, launch);
+            num_elements, 512, 4096, 4096, launch);
     });
 }
 

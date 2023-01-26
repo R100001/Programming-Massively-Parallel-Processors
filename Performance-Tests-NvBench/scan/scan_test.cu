@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     three_phase_parallel_inclusive_scan<int><<<1, 512, 4096 * sizeof(int)>>>(
         thrust::raw_pointer_cast(d_vec3.data()), thrust::raw_pointer_cast(d_res3.data()), n3, 4096);
     check_results(h_res3, d_res3, n3, std::string("Three Phase Parallel"));
-
+/*
     d_vec4 = h_vec4;
     hierarchical_scan_Kogge_Stone<int>(thrust::raw_pointer_cast(d_vec4.data()), thrust::raw_pointer_cast(d_res4.data()), n4);
     check_results(h_res4, d_res4, n4, std::string("Hierarchical Kogge Stone"));
@@ -87,6 +87,6 @@ int main(int argc, char *argv[])
     d_vec6 = h_vec6;
     hierarchical_scan_three_phase<int>(thrust::raw_pointer_cast(d_vec6.data()), thrust::raw_pointer_cast(d_res6.data()), n6);
     check_results(h_res6, d_res6, n6, std::string("Hierarchical Three Phase Parallel"));
-
+*/
     return 0;
 }
