@@ -338,8 +338,10 @@ The performance of the kernel is measured in multiple GPUs using the [NvBench](h
 
 ### Comparison
 
-Both tiles approaches (square and rectangular tiles) have a better memory bandwidth utilization than the basic approach. 
+Both tiles approaches (square and rectangular tiles) have worse memory bandwidth utilization than the basic approach. 
 
-However we can see that all kernels have very low memory bandwidth utilization. This shows that the kernel is compute bound and not memory bound.
+A reason for this might be the added complexity of the tiled kernels. The kernels indroduce a lot of branches and synchronization points. This might cause the tiled kernels to be slower than the basic approach.
+
+All kernels however have very low memory bandwidth utilization. This means that the kernels are memory bound. There is a lot of room for improvement.
 
 ---
