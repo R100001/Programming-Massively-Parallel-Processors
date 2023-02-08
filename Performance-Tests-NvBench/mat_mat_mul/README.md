@@ -5,7 +5,7 @@
 
 Matrix - Matrix Multiplication is an important component of the Basic Linear Algebra Subprograms (BLAS). It is used as basis for many other operations in linear algebra. The multiplication of two matrices is shown below.
 
-![Matrix-Matrix Multiplication](Images/mat_mat_mul.png)
+![Matrix-Matrix Multiplication](Images/mat_mat_mul_example.png)
 
 ---
 
