@@ -90,7 +90,7 @@ int main(int argc, char* argv[]){
     color_to_grayscale_conversion<<<dimGrid, dimBlock>>>(d_input_image, d_output_image, image_width, image_height);
 
     // Copy the output back to the host
-    cudaMemcpy(h_output_image, d_output_image, size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
+    cudaMemcpy(h_output_image, d_output_image, NUM_CHANNELS * size * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 
 #ifdef DEBUG
     // Show the output image
