@@ -119,10 +119,13 @@ ceil(400 / 32) = 13, ceil(900 / 32) = 29
 *7. With reference to the previous question, how many idle threads do you expect to have?*
 
 ```
-13 * 32 - 400 = 16 idle threads in x dimension 
-29 * 32 - 900 = 28 idle threads in y dimension
+13 * 29 * 32 * 32 = 386048 threads launched
+400 * 900 = 360000 pixels
+386048 - 360000 = 26048 idle threads
 
-Total: 16 * 28 = 448 idle threads
+16 extra columns across 29 * 32 thread-rows: 16 * 928 = 14848
+28 extra rows across the 400 in-range columns: 28 * 400 = 11200
+14848 + 11200 = 26048
 ```
 
 ---
