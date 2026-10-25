@@ -56,8 +56,8 @@ Each thread calculates 2 elements so the number of elements processed by the pre
 **Correct answer:** C
 
 ```
-ceil(8000/1024) = 4 blocks
-4 blocks * 1024 threads per blocks = 8192 threads 
+ceil(8000/1024) = 8 blocks
+8 blocks * 1024 threads per blocks = 8192 threads 
 ```
 
 ---
